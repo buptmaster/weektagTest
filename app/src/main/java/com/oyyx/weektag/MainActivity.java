@@ -51,6 +51,14 @@ public class MainActivity extends AppCompatActivity
         username = (TextView) view.findViewById(R.id.username);
         emailaddress = (TextView) view.findViewById(R.id.email_address);
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //...
+            }
+        });
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
