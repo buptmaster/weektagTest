@@ -1,6 +1,7 @@
 package com.oyyx.weektag;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private Pattern mPattern = Pattern.compile(EMAIL_PATTERN);
 
 
+
     @BindView(R.id.username_til)
     TextInputLayout userName_til;
 
@@ -40,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
     }
 
     @Override
@@ -67,6 +70,8 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
         else {
+            emailAddress_til.setErrorEnabled(false);
+            userName_til.setErrorEnabled(false);
             Intent data = new Intent();
             data.putExtra("username", username);
             data.putExtra("emailaddress", emailaddress);
@@ -85,5 +90,7 @@ public class LoginActivity extends AppCompatActivity {
     private boolean validateEmail(String str){
         return mPattern.matcher(str).matches();
     }
+
+
 
 }
