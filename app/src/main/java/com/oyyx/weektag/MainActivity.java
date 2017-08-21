@@ -23,12 +23,7 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private LinearLayout headerLayout;
-
-    @BindView(R.id.username)
     TextView username;
-
-    @BindView(R.id.email_address)
     TextView emailadress;
 
     @Override
@@ -48,6 +43,17 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View view = navigationView.inflateHeaderView(R.layout.nav_header_main);
+        username = (TextView) view.findViewById(R.id.username);
+        emailadress = (TextView) view.findViewById(R.id.email_address);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(MainActivity.this,LoginActivity.class),0);
+            }
+        });
 
     }
 
@@ -108,10 +114,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    @OnClick(R.id.username)
-    public void startLoginActivity(){
-        startActivityForResult(new Intent(MainActivity.this,LoginActivity.class),0);
-    }
 
 
 
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity
         if(resultCode == RESULT_OK){
             if (requestCode == 0) {
                 String userName = data.getStringExtra("username");
-                String emailAddress = data.getStringExtra("Address");
+                String emailAddress = data.getStringExtra("emailaddress");
                 if (userName == null || emailAddress == null) {
                     username.setText("未知用户");
                     emailadress.setText("未知邮箱");

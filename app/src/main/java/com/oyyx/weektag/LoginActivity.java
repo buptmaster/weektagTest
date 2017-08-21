@@ -1,5 +1,6 @@
 package com.oyyx.weektag;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,7 +22,7 @@ import butterknife.OnClick;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String EMAIL_PATTERN = "/^[a-zA-Z0-9#_~!$&'()*+,;=:.\"(),:;<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$/";
+    private static final String EMAIL_PATTERN ="\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
     private Pattern mPattern = Pattern.compile(EMAIL_PATTERN);
 
 
@@ -57,17 +58,20 @@ public class LoginActivity extends AppCompatActivity {
         String username = userName_til.getEditText().getText().toString();
         String emailaddress = emailAddress_til.getEditText().getText().toString();
 
-        if(validateEmail(emailaddress)&&username.equals("")){
-            setResult(RESULT_OK);
-            finish();
-            return;
-        }
-
         if(!validateEmail(emailaddress)){
             emailAddress_til.setError("不是有效的邮箱地址");
+            return;
         }
-        if(!username.equals("")){
+        if(username.equals("")){
             userName_til.setError("用户名不能为空");
+            return;
+        }
+        else {
+            Intent data = new Intent();
+            data.putExtra("username", username);
+            data.putExtra("emailaddress", emailaddress);
+            setResult(RESULT_OK,data);
+            finish();
         }
     }
 
