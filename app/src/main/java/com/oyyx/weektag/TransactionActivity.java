@@ -81,17 +81,18 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
                     til_title.setError("标题不能为空");
                     return true;
                 }
-                Transaction transaction = new Transaction();
-                transaction.setColour(mSelectColor);
-                transaction.setTitle(title);
-                transaction.setMemo(memo);
-                transaction.setUri(uri);
-                transaction.setYear(year);
-                transaction.setMonth(month);
-                transaction.setDay(day);
-                transaction.setHour(hour);
-                transaction.setMin(min);
-                transaction.save();
+                Transactionn transactionn = new Transactionn();
+                transactionn.setTime(CalendarUtils.timeToDate(year,month,day,hour,min));
+                transactionn.setColour(mSelectColor);
+                transactionn.setTitle(title);
+                transactionn.setMemo(memo);
+                transactionn.setUri(uri);
+//                transactionn.setYear(year);
+//                transactionn.setMonth(month);
+//                transactionn.setDay(day);
+//                transactionn.setHour(hour);
+//                transactionn.setMin(min);
+                transactionn.save();
                 finish();
             }
             return true;
@@ -159,7 +160,7 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
             @Override
             public void onClick(View view) {
                 datePickerDialog = DatePickerDialog.newInstance(TransactionActivity.this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
-                datePickerDialog.setYearRange(1999,2037);
+                datePickerDialog.setYearRange(calendar.get(Calendar.YEAR),2037);
                 datePickerDialog.setCloseOnSingleTapDay(false);
                 datePickerDialog.show(getSupportFragmentManager(),"datePicker");
             }
