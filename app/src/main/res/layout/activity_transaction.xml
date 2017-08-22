@@ -6,9 +6,24 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="com.oyyx.weektag.TranscationActivity">
+    tools:context="com.oyyx.weektag.TransactionActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/title_til"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_margin="12dp">
@@ -21,17 +36,33 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.v7.widget.CardView
-        app:cardBackgroundColor="@color/gray"
-        app:cardCornerRadius="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="32dp">
+        app:cardBackgroundColor="@color/gray"
+        app:cardCornerRadius="16dp">
 
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/time_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="15sp"/>
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
 
@@ -40,6 +71,8 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,6 +80,7 @@
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/date_fab"
+                android:src="@drawable/ic_action_calendar"
                 app:elevation="0dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="16dp"
@@ -57,15 +91,17 @@
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/color_picker_fab"
-                app:elevation="0dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_width="56dp"
-                android:layout_marginBottom="8dp"
-                android:layout_height="56dp"/>
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_action_color"
+                app:elevation="0dp"/>
 
             <android.support.design.widget.FloatingActionButton
+                android:src="@drawable/ic_action_clock"
                 android:id="@+id/time_fab"
                 app:elevation="0dp"
                 android:layout_width="56dp"
@@ -78,14 +114,11 @@
         </LinearLayout>
 
     </FrameLayout>
-    <TextView
-        android:gravity="center"
-        android:text="日期                 颜色                 时间"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
     <android.support.design.widget.TextInputLayout
-        android:layout_margin="12dp"
+        android:id="@+id/memo_til"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -96,6 +129,16 @@
             android:layout_height="wrap_content"/>
 
     </android.support.design.widget.TextInputLayout>
+
+    <ImageView
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@color/gray"
+        android:scaleType="center"
+        android:src="@drawable/ic_menu_gallery"
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
 
 
 </LinearLayout>
