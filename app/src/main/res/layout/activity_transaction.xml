@@ -131,12 +131,10 @@
     </android.support.design.widget.TextInputLayout>
 
     <ImageView
+        android:background="@color/gray"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
-        android:background="@color/gray"
-        android:scaleType="center"
-        android:src="@drawable/ic_menu_gallery"
-        android:id="@+id/imageView"
+        android:id="@+id/photo_iv"
         android:layout_width="match_parent"
         android:layout_height="200dp"/>
 
