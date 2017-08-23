@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -78,6 +79,12 @@ public class MainActivity extends AppCompatActivity
         UpdateUI();
         sp = getApplicationContext().getSharedPreferences("userInfo", MODE_PRIVATE);
         setUserInfo(sp);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        UpdateUI();
     }
 
     @Override
@@ -170,6 +177,8 @@ public class MainActivity extends AppCompatActivity
     private void UpdateUI(){
         TransactionLab transactionLab = TransactionLab.get();
         List<Transactionn> transactionns = transactionLab.getTransactionns();
+
+        Log.e("___________", transactionns.size() + "");
 
         if (mHistoryAdapter == null) {
             mHistoryAdapter = new HistoryAdapter(transactionns);

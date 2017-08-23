@@ -4,38 +4,47 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="80dp"
                                     android:layout_margin="8dp"
-                                    android:backgroundTint="#afafaf"
-                                    app:cardCornerRadius="8dp"
                                     app:cardElevation="6dp">
 
     <LinearLayout
+        android:id="@+id/item_child_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
+
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_color_use"
+            app:elevation="2dp"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
-            android:layout_margin="8dp"/>
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="8dp"/>
 
         <LinearLayout
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_weight="3.5"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/history_title"
-                android:text="欧阳宇翔"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="2.5"
                 android:gravity="center"
+                android:text="欧阳宇翔"
                 android:textSize="35sp"/>
+
+            <FrameLayout
+                android:id="@+id/dash_line_title"
+                android:layerType="software"
+                android:background="@drawable/dash_line"
+                android:layout_width="200dp"
+                android:layout_height="2dp"/>
 
             <TextView
                 android:id="@+id/history_memo"
@@ -45,6 +54,10 @@
                 android:gravity="center"
                 android:text="1999年6月23日"/>
         </LinearLayout>
+        <!--<view-->
+            <!--android:background="#717171"-->
+            <!--android:layout_width="2dp"-->
+            <!--android:layout_height="match_parent"/>-->
 
         <FrameLayout
             android:layout_marginLeft="4dp"
@@ -68,6 +81,7 @@
                     android:gravity="center"
                     android:text="91"
                     android:textSize="35sp"/>
+
 
                 <TextView
                     android:layout_width="wrap_content"

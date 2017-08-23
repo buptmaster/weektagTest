@@ -32,10 +32,12 @@ public class CalendarUtils {
     }
 
     public static long timeToDate(int year,int month,int day,int hour,int min) {
+
         String monthstr = month + "";
         String daystr = day + "";
         String hourstr = hour + "";
         String minstr = min + "";
+
         if (month<10)
             monthstr = ("0" + monthstr);
         if (day<10)

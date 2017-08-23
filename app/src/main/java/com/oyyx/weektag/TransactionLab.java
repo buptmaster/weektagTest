@@ -25,12 +25,11 @@ public class TransactionLab {
     }
 
     private TransactionLab(){
-        mTransactionns = DataSupport.findAll(Transactionn.class);
-        Log.e("----------->",""+mTransactionns.size());
+        
     }
 
     public List<Transactionn> getTransactionns(){
-
+        mTransactionns = DataSupport.findAll(Transactionn.class);
         return mTransactionns;
     }
 
