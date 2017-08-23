@@ -8,4 +8,6 @@
     <string name="title_activity_login">更改您的信息</string>
 
     <string name="color_picker_default_value">选择颜色</string>
+    <string name="good_thing">坚信美好的事情即将发生</string>
+    <string name="bad_thing">祝愿失意的时刻总会过去</string>
 </resources>

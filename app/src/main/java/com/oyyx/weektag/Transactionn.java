@@ -1,6 +1,8 @@
 package com.oyyx.weektag;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import org.litepal.crud.DataSupport;
 
@@ -12,7 +14,7 @@ import java.util.UUID;
  *
  */
 
-public class Transactionn extends DataSupport {
+public class Transactionn extends DataSupport implements Parcelable {
 
     private String mUUID;
 
@@ -24,7 +26,7 @@ public class Transactionn extends DataSupport {
 
     private int colour;
 
-    private Uri mUri;
+    private String mUri;
 
     public Transactionn(){
         mUUID = UUID.randomUUID().toString();
@@ -54,13 +56,6 @@ public class Transactionn extends DataSupport {
         this.colour = color;
     }
 
-    public Uri getUri() {
-        return mUri;
-    }
-
-    public void setUri(Uri uri) {
-        mUri = uri;
-    }
 
     public String getUUID() {
         return mUUID;
@@ -77,4 +72,49 @@ public class Transactionn extends DataSupport {
     public void setTime(long time) {
         this.time = time;
     }
+
+
+    public String getUri() {
+        return mUri;
+    }
+
+    public void setUri(String uri) {
+        mUri = uri;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.mUUID);
+        dest.writeString(this.title);
+        dest.writeString(this.memo);
+        dest.writeLong(this.time);
+        dest.writeInt(this.colour);
+        dest.writeString(this.mUri);
+    }
+
+    protected Transactionn(Parcel in) {
+        this.mUUID = in.readString();
+        this.title = in.readString();
+        this.memo = in.readString();
+        this.time = in.readLong();
+        this.colour = in.readInt();
+        this.mUri = in.readString();
+    }
+
+    public static final Parcelable.Creator<Transactionn> CREATOR = new Parcelable.Creator<Transactionn>() {
+        @Override
+        public Transactionn createFromParcel(Parcel source) {
+            return new Transactionn(source);
+        }
+
+        @Override
+        public Transactionn[] newArray(int size) {
+            return new Transactionn[size];
+        }
+    };
 }

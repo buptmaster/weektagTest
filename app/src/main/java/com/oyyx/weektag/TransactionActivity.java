@@ -15,6 +15,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextPaint;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +24,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
@@ -86,12 +89,9 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
                 transactionn.setColour(mSelectColor);
                 transactionn.setTitle(title);
                 transactionn.setMemo(memo);
-                transactionn.setUri(uri);
-//                transactionn.setYear(year);
-//                transactionn.setMonth(month);
-//                transactionn.setDay(day);
-//                transactionn.setHour(hour);
-//                transactionn.setMin(min);
+                if(uri != null) {
+                    transactionn.setUri(uri.toString());
+                }
                 transactionn.save();
                 finish();
             }
@@ -206,10 +206,10 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             uri = data.getData();
-            Picasso.with(this)
+            iv_photo.setBackgroundColor(Color.WHITE);
+            Glide.with(this)
                     .load(uri)
                     .into(iv_photo);
-            iv_photo.setBackgroundColor(Color.WHITE);
         }else {
             Snackbar.make(getWindow().getDecorView(),"加载失败",Snackbar.LENGTH_LONG).show();
         }
@@ -244,6 +244,8 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
         this.year = year;
         this.month = month;
         this.day = day;
+        TextPaint paint = tv_date.getPaint();
+        paint.setFakeBoldText(true);
         tv_date.setText(year+"年"+month+"月"+day+"日");
     }
 
@@ -251,6 +253,16 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
         hour = hourOfDay;
         min = minute;
-        tv_time.setText(hourOfDay+":"+minute);
+        String hourstr = hour+"";
+        String minstr = min + "";
+        if (hour < 10) {
+            hourstr = "0"+hourstr;
+        }
+        if (min < 10) {
+            minstr = "0" + minstr;
+        }
+        TextPaint paint = tv_time.getPaint();
+        paint.setFakeBoldText(true);
+        tv_time.setText(hourstr+":"+minstr);
     }
 }

@@ -1,9 +1,13 @@
 package com.oyyx.weektag;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +31,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
 
 
     @Override
-    public TransactionHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TransactionHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_transaction, parent, false);
-        TransactionHolder transactionHolder = new TransactionHolder(view);
+        final TransactionHolder transactionHolder = new TransactionHolder(view);
+        transactionHolder.item_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Transactionn transactionn = mTransactionns.get(transactionHolder.getAdapterPosition());
+                Intent intent = new Intent(parent.getContext(), DetailActivity.class);
+                intent.putExtra("transaction",transactionn);
+                parent.getContext().startActivity(intent);
+            }
+        });
         return transactionHolder;
         }
 
@@ -57,7 +70,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
         public FloatingActionButton color_fab;
 
         public FrameLayout title_dash_line;
-        public LinearLayout item_child_layout;
+        public CardView item_layout;
 
         public TransactionHolder(View view) {
             super(view);
@@ -67,7 +80,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
             color_fab = (FloatingActionButton) view.findViewById(R.id.fab_color_use);
 
             title_dash_line = (FrameLayout) view.findViewById(R.id.dash_line_title);
-            item_child_layout = (LinearLayout) view.findViewById(R.id.item_child_layout);
+            item_layout = (CardView) view.findViewById(R.id.item_layout);
+
+            //加粗字体
+            TextPaint paint = remaining_days_tv.getPaint();
+            paint.setFakeBoldText(true);
+            TextPaint paint1 = title_tv.getPaint();
+            paint1.setFakeBoldText(true);
+
 
         }
 
@@ -79,16 +99,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
 
             if(longs[0]<=0){
                 remaining_days_tv.setText(0+"");
-                item_child_layout.setBackgroundColor(Color.GRAY);
+                item_layout.setCardBackgroundColor(item_layout.getResources().getColor(R.color.cardview_dark_background));
             }else {
                 remaining_days_tv.setText(longs[0] + "");
             }
             title_tv.setText(transactionn.getTitle());
             color_fab.setBackgroundTintList(ColorStateList.valueOf(transactionn.getColour()));
-            if(transactionn.getMemo() == null){
-                memo_tv.setVisibility(View.GONE);
-                title_dash_line.setVisibility(View.GONE);
-            }else {
+            if (transactionn.getMemo() != null) {
+                memo_tv.setVisibility(View.VISIBLE);
+                title_dash_line.setVisibility(View.VISIBLE);
                 memo_tv.setText(transactionn.getMemo());
             }
         }
