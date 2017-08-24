@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:padding="8dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -17,9 +18,8 @@
         android:paddingBottom="64dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="48sp"
-        android:gravity="center"
-        android:text="欢迎"/>
+        android:textSize="35sp"
+        android:text="更改您的信息"/>
 
     
     <android.support.design.widget.TextInputLayout
@@ -47,13 +47,7 @@
             android:inputType="textEmailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
     </android.support.design.widget.TextInputLayout>
 
-    <Button
-        android:id="@+id/information_confirm_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="确认我的选择"/>
 
 </LinearLayout>

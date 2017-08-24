@@ -34,6 +34,7 @@ import org.xdty.preference.colorpicker.ColorPickerDialog;
 import org.xdty.preference.colorpicker.ColorPickerSwatch;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -95,6 +96,12 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
                 transactionn.setMemo(memo);
                 if(uri != null) {
                     transactionn.setUri(uri.toString());
+                }else {
+                    try {
+                        transactionn.setUri(mPhotoFile.getCanonicalPath());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 transactionn.save();
                 finish();

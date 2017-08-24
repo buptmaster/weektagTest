@@ -1,8 +1,10 @@
 package com.oyyx.weektag;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,11 +19,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import org.litepal.LitePal;
 
+import java.io.File;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -31,6 +39,7 @@ public class MainActivity extends AppCompatActivity
 
     private TextView username;
     private TextView emailaddress;
+
 
     private SharedPreferences sp;
 
@@ -125,17 +134,13 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
+        if (id == R.id.nav_import) {
 
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_feedback) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_info) {
 
         }
 
@@ -153,15 +158,19 @@ public class MainActivity extends AppCompatActivity
             if (requestCode == 0) {
                 String userName = data.getStringExtra("username");
                 String emailAddress = data.getStringExtra("emailaddress");
+
+
                 if (userName == null || emailAddress == null) {
                     username.setText("未知用户");
                     emailaddress.setText("未知邮箱");
                 }else {
+
                     username.setText(userName);
                     emailaddress.setText(emailAddress);
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString("username", userName);
                     editor.putString("emailaddress", emailAddress);
+
                     editor.apply();
                     Snackbar.make(getWindow().getDecorView(),"欢迎，"+ userName,Snackbar.LENGTH_LONG).show();
                 }
@@ -172,6 +181,7 @@ public class MainActivity extends AppCompatActivity
     private void setUserInfo(SharedPreferences sp){
         username.setText(sp.getString("username", "未知用户"));
         emailaddress.setText(sp.getString("emailaddress", "未知邮箱"));
+
     }
 
     private void UpdateUI(){
@@ -189,4 +199,5 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
+
 }

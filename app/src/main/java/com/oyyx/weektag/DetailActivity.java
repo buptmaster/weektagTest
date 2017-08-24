@@ -34,6 +34,8 @@ public class DetailActivity extends AppCompatActivity {
 
     private Transactionn transactionn;
 
+    private String uri;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,8 @@ public class DetailActivity extends AppCompatActivity {
         long targetTime = transactionn.getTime();
         String memo = transactionn.getMemo();
         int color = transactionn.getColour();
-        Uri uri = Uri.parse(transactionn.getUri());
+        uri = transactionn.getUri();
+       // Uri uri = Uri.parse(transactionn.getUri());
         uuid = transactionn.getUUID();
         Log.e("---__--_", "" + uri);
 
