@@ -1,10 +1,13 @@
 package com.oyyx.weektag;
 
 
+import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -39,6 +42,15 @@ public class TransactionLab {
 
     public int deleteTransaction(String uuid){
        return DataSupport.deleteAll(Transactionn.class,"mUUID = ?",uuid);
+    }
+
+    public File getPhotoFile(Transactionn transactionn, Context context) {
+        File externalFileDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if (externalFileDir == null) {
+            return null;
+        }
+
+        return new File(externalFileDir, transactionn.getPhotoName());
     }
 
 

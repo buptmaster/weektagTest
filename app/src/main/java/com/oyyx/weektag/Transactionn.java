@@ -82,6 +82,10 @@ public class Transactionn extends DataSupport implements Parcelable {
         mUri = uri;
     }
 
+    public String getPhotoName(){
+        return "IMG_" + getUUID() + ".jpg";
+    }
+
     @Override
     public int describeContents() {
         return 0;

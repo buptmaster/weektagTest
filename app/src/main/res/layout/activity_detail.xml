@@ -50,6 +50,7 @@
             android:orientation="vertical">
 
             <android.support.v7.widget.CardView
+                android:background="?android:attr/selectableItemBackground"
                 app:cardCornerRadius="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,7 +83,7 @@
                         app:isShowSecond="true"
                         app:suffixGravity="center"
                         app:suffixTextColor="#000000"
-                        app:suffixTextSize="30sp"
+                        app:suffixTextSize="20sp"
                         app:timeBgDivisionLineSize="1dp"
                         app:timeBgRadius="3dp"
                         app:timeBgSize="50dp"
@@ -90,6 +91,7 @@
                         app:timeTextSize="25sp"
                         app:suffixDay="天"
                         app:suffixHour="时"
+                        app:suffixMinute="分"
                         app:suffixSecond="秒"
                         />
                 </LinearLayout>
@@ -97,6 +99,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
+                android:background="?android:attr/selectableItemBackground"
                 app:cardCornerRadius="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

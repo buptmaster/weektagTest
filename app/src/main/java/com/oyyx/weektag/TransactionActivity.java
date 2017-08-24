@@ -28,12 +28,12 @@ import com.bumptech.glide.Glide;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
-import com.squareup.picasso.Picasso;
 
 import org.litepal.LitePal;
 import org.xdty.preference.colorpicker.ColorPickerDialog;
 import org.xdty.preference.colorpicker.ColorPickerSwatch;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -74,6 +74,10 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
     private TextInputLayout til_title;
     private TextInputLayout til_memo;
 
+    private Transactionn transactionn;
+
+    private File mPhotoFile;
+
     private Toolbar.OnMenuItemClickListener onMenuClick = new Toolbar.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem item) {
@@ -84,7 +88,7 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
                     til_title.setError("标题不能为空");
                     return true;
                 }
-                Transactionn transactionn = new Transactionn();
+
                 transactionn.setTime(CalendarUtils.timeToDate(year,month,day,hour,min));
                 transactionn.setColour(mSelectColor);
                 transactionn.setTitle(title);
@@ -115,6 +119,8 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
         setSupportActionBar(toolbar);
 
         toolbar.setOnMenuItemClickListener(onMenuClick);
+
+        transactionn = new Transactionn();
 
         til_title = (TextInputLayout) findViewById(R.id.title_til);
         til_memo = (TextInputLayout) findViewById(R.id.memo_til);
@@ -192,6 +198,9 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
                                     startActivityForResult(Intent.createChooser(intent,"选择图片"),SELECT_FROM_ALBUM);
                                 }else {
                                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    mPhotoFile = TransactionLab.get().getPhotoFile(transactionn, TransactionActivity.this);
+                                    Uri uri = Uri.fromFile(mPhotoFile);
+                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                                     startActivityForResult(intent,TAKE_PHOTOS);
                                 }
                             }
@@ -205,11 +214,20 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            uri = data.getData();
-            iv_photo.setBackgroundColor(Color.WHITE);
-            Glide.with(this)
-                    .load(uri)
-                    .into(iv_photo);
+
+            if(requestCode == SELECT_FROM_ALBUM) {
+                uri = data.getData();
+                iv_photo.setBackgroundColor(Color.WHITE);
+                Glide.with(this)
+                        .load(uri)
+                        .into(iv_photo);
+            } else if (requestCode == TAKE_PHOTOS) {
+                if (mPhotoFile != null) {
+                    Glide.with(this)
+                            .load(mPhotoFile)
+                            .into(iv_photo);
+                }
+            }
         }else {
             Snackbar.make(getWindow().getDecorView(),"加载失败",Snackbar.LENGTH_LONG).show();
         }
