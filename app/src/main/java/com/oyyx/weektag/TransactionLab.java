@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * Created by 123 on 2017/8/22.
+ * 一个持久化层
  */
 
 public class TransactionLab {
@@ -21,6 +22,7 @@ public class TransactionLab {
 
     private List<Transactionn> mTransactionns;
 
+    //单例
     public static TransactionLab get() {
         if (sTransaction == null) {
             sTransaction = new TransactionLab();
@@ -32,26 +34,30 @@ public class TransactionLab {
         
     }
 
+    //得到所有的transaction
     public List<Transactionn> getTransactionns(){
         mTransactionns = DataSupport.findAll(Transactionn.class);
         return mTransactionns;
     }
 
+    //得到时间排序好的transaction
     public List<Transactionn> getTransactionnsByTime(){
-        //mTransactionns = DataSupport.where("time > ?","0").order("colour").find(Transactionn.class);
         mTransactionns = DataSupport.findAll(Transactionn.class);
         Collections.sort(mTransactionns);
         return mTransactionns;
     }
 
+    //删除所有的transaction
     public void deleteTransactions(){
         DataSupport.deleteAll(Transactionn.class);
     }
 
+    //删除指定的transaction
     public int deleteTransaction(String uuid){
        return DataSupport.deleteAll(Transactionn.class,"mUUID = ?",uuid);
     }
 
+    //设置并得到刚拍摄照片的路径
     public File getPhotoFile(Transactionn transactionn, Context context) {
         File externalFileDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         if (externalFileDir == null) {
@@ -59,6 +65,4 @@ public class TransactionLab {
         }
         return new File(externalFileDir, transactionn.getPhotoName());
     }
-
-
 }

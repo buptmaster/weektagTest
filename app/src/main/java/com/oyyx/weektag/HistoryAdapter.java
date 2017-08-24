@@ -12,13 +12,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 /**
- * Created by 123 on 2017/8/22.
+ * Created by 123 on 2017/8/22.adapter
+ * MainActivity的一个adapter
  */
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.TransactionHolder> {
@@ -66,11 +70,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
 
         Transactionn mTransactionn;
 
-        public TextView title_tv, memo_tv, remaining_days_tv;
-        public FloatingActionButton color_fab;
+        private TextView title_tv, memo_tv, remaining_days_tv;
+        private FloatingActionButton color_fab;
 
-        public FrameLayout title_dash_line;
-        public CardView item_layout;
+        private FrameLayout title_dash_line;
+        private CardView item_layout;
+
+        private ImageView date_bg;
+
+
 
         public TransactionHolder(View view) {
             super(view);
@@ -82,15 +90,20 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
             title_dash_line = (FrameLayout) view.findViewById(R.id.dash_line_title);
             item_layout = (CardView) view.findViewById(R.id.item_layout);
 
+            date_bg = (ImageView) view.findViewById(R.id.date_bg);
+
             //加粗字体
             TextPaint paint = remaining_days_tv.getPaint();
             paint.setFakeBoldText(true);
             TextPaint paint1 = title_tv.getPaint();
             paint1.setFakeBoldText(true);
 
+            Glide.with(view).load(R.drawable.date_bg).into(date_bg);
+
 
         }
 
+        //绑定事件
         public void bindTransaction(Transactionn transactionn) {
 
             mTransactionn = transactionn;
@@ -99,7 +112,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
 
             if(longs[0]<=0){
                 remaining_days_tv.setText(0+"");
-                //item_layout.setCardBackgroundColor(item_layout.getResources().getColor(R.color.cardview_dark_background));
             }else {
                 remaining_days_tv.setText(longs[0] + "");
             }

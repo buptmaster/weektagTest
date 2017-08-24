@@ -40,6 +40,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    //打开本人的qq临时会话uri
     private final String qqUrl = "mqqwpa://im/chat?chat_type=wpa&uin=768471488&version=1";
 
     private final static int SORT_DEFAULT = 0;
@@ -53,6 +54,9 @@ public class MainActivity extends AppCompatActivity
     private TextView username;
     private TextView emailaddress;
 
+    private ArrayList<Transactionn> mTransactionns_temp = new ArrayList<>();
+
+    //存储用户名及其邮箱
     private SharedPreferences sp;
 
     @Override
@@ -158,9 +162,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_import) {
-
-            CalendarUtils.getCalendarEvent(this);
-
+           mTransactionns_temp = CalendarUtils.getCalendarEvent(this,mTransactionns_temp);
+            if(sortFlag == SORT_DEFAULT) {
+                UpdateUI();
+            }
+            else if(sortFlag == SORT_BY_TIME) {
+                UpdateUIByTime();
+            }
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_feedback) {

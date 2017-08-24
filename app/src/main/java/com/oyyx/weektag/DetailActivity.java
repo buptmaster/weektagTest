@@ -2,6 +2,7 @@ package com.oyyx.weektag;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.os.Vibrator;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,19 +21,30 @@ import com.bumptech.glide.Glide;
 import org.litepal.LitePal;
 
 import java.util.Date;
+import java.util.Random;
 
 import cn.iwgang.countdownview.CountdownView;
 
+/**
+ * 展示详细内容的一个Activity
+ *
+ */
+
 public class DetailActivity extends AppCompatActivity {
 
+    //每个transaction的特定uuid
     private String uuid;
 
+    //计时器
     private CountdownView mCountdownView;
+    //浮动按钮
     private FloatingActionButton exportToCalendar;
+
     private ImageView detail_iv;
 
     private Transactionn transactionn;
 
+    //照片的特定uri
     private String uri;
 
 
@@ -40,19 +52,28 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        //初始化数据库
         LitePal.initialize(this);
 
         Intent intent = getIntent();
 
+        //获取从MainActivity的intent并从其中获取transaction的对象
         transactionn = intent.getParcelableExtra("transaction");
 
+        //标题
         String title = transactionn.getTitle();
+        //目标时间
         long targetTime = transactionn.getTime();
+        //备注
         String memo = transactionn.getMemo();
+        //为此事件选定的颜色
         int color = transactionn.getColour();
+        //照片的路径
         uri = transactionn.getUri();
+        //transaction唯一标识
         uuid = transactionn.getUUID();
 
+        //剩余时间
         long remainingTime = targetTime - (new Date()).getTime();
 
 
@@ -67,17 +88,23 @@ public class DetailActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
+        //设置返回键
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
         collapsingToolbarLayout.setTitle(title);
+        //启动计时器
         if(remainingTime>=0){
             mCountdownView.start(remainingTime);
         }
 
         if (memo != null) {
             detail_tv.setText(memo);
+        }else {
+            int[] str = {R.string.good_thing,R.string.bad_thing};
+            Random r = new Random();
+            detail_tv.setText(str[r.nextInt(1)]);
         }
 
         if (uri != null) {
@@ -86,11 +113,13 @@ public class DetailActivity extends AppCompatActivity {
 
         exportToCalendar.setBackgroundTintList(ColorStateList.valueOf(color));
 
+        //导出至日历的操作
         exportToCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CalendarUtils.addCalendarEvent(DetailActivity.this,transactionn.getTitle(),transactionn.getMemo(),transactionn.getTime());
                 Snackbar.make(getWindow().getDecorView(), "导出成功！", Snackbar.LENGTH_LONG).show();
+                ((Vibrator)getSystemService(VIBRATOR_SERVICE)).vibrate(200);
             }
         });
     }
@@ -98,11 +127,12 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            //返回
             case android.R.id.home:
                 finish();
                 return true;
+            //分享
             case R.id.action_share:
-
                 long[] times = CalendarUtils.getTime(transactionn.getTime());
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
@@ -112,6 +142,7 @@ public class DetailActivity extends AppCompatActivity {
                         "天哦！");
                 startActivity(Intent.createChooser(intent,"分享"));
                 return true;
+            //删除
             case R.id.action_delete:
                 TransactionLab.get().deleteTransaction(uuid);
                 finish();

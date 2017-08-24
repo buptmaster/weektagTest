@@ -4,7 +4,7 @@
     <string name="navigation_drawer_open">打开侧边栏</string>
     <string name="navigation_drawer_close">关闭侧边栏</string>
 
-    <string name="action_sort_by_time">排序</string>
+    <string name="action_sort_by_time">按时间排序</string>
     <string name="title_activity_login">更改您的信息</string>
 
     <string name="color_picker_default_value">选择颜色</string>

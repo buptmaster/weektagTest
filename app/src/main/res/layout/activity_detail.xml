@@ -23,6 +23,7 @@
 
             <ImageView
                 android:id="@+id/detail_iv"
+                android:src="@drawable/background"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -39,6 +40,16 @@
 
     </android.support.design.widget.AppBarLayout>
 
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/export_to_calendar"
+        android:src="@drawable/ic_action_export"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_anchor="@id/appBar"
+        app:layout_anchorGravity="bottom|end"/>
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -50,38 +61,43 @@
             android:orientation="vertical">
 
             <android.support.v7.widget.CardView
-                android:background="?android:attr/selectableItemBackground"
-                app:cardCornerRadius="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp">
+                android:layout_margin="16dp"
+                android:background="?android:attr/selectableItemBackground"
+                app:cardCornerRadius="8dp">
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
                     <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:padding="8dp"
                         android:text="剩余："
-                        android:textSize="25sp"
-                        android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:textSize="25sp"/>
 
                     <cn.iwgang.countdownview.CountdownView
                         android:id="@+id/cv_remaining_time"
-                        android:padding="4dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:foregroundGravity="center"
+                        android:padding="4dp"
                         app:isHideTimeBackground="false"
                         app:isShowDay="true"
                         app:isShowHour="true"
                         app:isShowMillisecond="false"
                         app:isShowMinute="true"
                         app:isShowSecond="true"
+                        app:suffixDay="天"
                         app:suffixGravity="center"
+                        app:suffixHour="时"
+                        app:suffixMinute="分"
+                        app:suffixSecond="秒"
                         app:suffixTextColor="#000000"
                         app:suffixTextSize="20sp"
                         app:timeBgDivisionLineSize="1dp"
@@ -89,47 +105,44 @@
                         app:timeBgSize="50dp"
                         app:timeTextColor="#FFFFFF"
                         app:timeTextSize="25sp"
-                        app:suffixDay="天"
-                        app:suffixHour="时"
-                        app:suffixMinute="分"
-                        app:suffixSecond="秒"
                         />
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:background="?android:attr/selectableItemBackground"
-                app:cardCornerRadius="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp">
+                android:layout_margin="16dp"
+                android:background="?android:attr/selectableItemBackground"
+                app:cardCornerRadius="8dp">
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:padding="8dp"
                         android:text="备注："
-                        android:textSize="25sp"
-                        android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:textSize="25sp"/>
 
                     <FrameLayout
-                        android:layerType="software"
-                        android:background="@drawable/dash_line"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"/>
+                        android:layout_height="2dp"
+                        android:background="@drawable/dash_line"
+                        android:layerType="software"/>
 
                     <TextView
                         android:id="@+id/detail_memo"
-                        android:padding="8dp"
-                        android:text="@string/good_thing"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:text="@string/good_thing"/>
 
                 </LinearLayout>
 
@@ -138,15 +151,5 @@
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
-
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/export_to_calendar"
-        android:src="@drawable/ic_action_export"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_anchor="@id/appBar"
-        app:layout_anchorGravity="bottom|end"/>
 
 </android.support.design.widget.CoordinatorLayout>

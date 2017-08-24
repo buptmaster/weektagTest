@@ -19,6 +19,7 @@ import java.util.TimeZone;
 
 /**
  * Created by 123 on 2017/8/22.
+ * 一个处理日程事件及日期转换的工具类
  */
 
 public class CalendarUtils {
@@ -33,6 +34,7 @@ public class CalendarUtils {
 
     private static long ONE_HOUR = 60 * 60 * 1000;
 
+    //将毫秒数转换称天数，小时数，分钟数，秒数
     public static long[] getTime(long time) {
         long different = time - (new Date()).getTime();
         long secondsInMilli = 1000;
@@ -54,6 +56,7 @@ public class CalendarUtils {
         return new long[]{elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds};
     }
 
+    //将一个特定日期转换成毫秒数
     public static long timeToDate(int year, int month, int day, int hour, int min) {
 
         String monthstr = month + "";
@@ -80,6 +83,7 @@ public class CalendarUtils {
         return date.getTime();
     }
 
+    //检查calendar是否注册了账户
     public static int checkCalendarAccount(Context context) {
         Cursor userCursor = context.getContentResolver().query(Uri.parse(CALANDER_URL), null, null, null, null);
         try {
@@ -99,6 +103,7 @@ public class CalendarUtils {
         }
     }
 
+    //添加测试账户
     public static long addCalendarAccount(Context context) {
         TimeZone timeZone = TimeZone.getDefault();
         ContentValues value = new ContentValues();
@@ -127,6 +132,7 @@ public class CalendarUtils {
         return id;
     }
 
+    //添加日程
     public static void addCalendarEvent(Context context,String title, String description, long beginTime){
         // 获取日历账户的id
         int calId = checkAndAddCalendarAccount(context);
@@ -170,6 +176,7 @@ public class CalendarUtils {
         }
     }
 
+    //检查并添加账户
     private static int checkAndAddCalendarAccount(Context context){
         int oldId = checkCalendarAccount(context);
         if( oldId >= 0 ){
@@ -184,20 +191,40 @@ public class CalendarUtils {
         }
     }
 
-    public static void getCalendarEvent(Context context) {
+    //获取日历中的日程
+    public static ArrayList<Transactionn> getCalendarEvent(Context context,ArrayList<Transactionn> transactionns) {
         Uri uri = Uri.parse(CALANDER_EVENT_URL);
+        int flag = 0;
         Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
         while (cursor.moveToNext()) {
             Transactionn transactionn = new Transactionn();
             if(cursor.getLong(cursor.getColumnIndex(CalendarContract.Events.DTSTART))<(new Date()).getTime()){
                 continue;
             }
-            transactionn.setTitle(cursor.getString(cursor.getColumnIndex(CalendarContract.Events.TITLE)));
-            transactionn.setTime(cursor.getLong(cursor.getColumnIndex(CalendarContract.Events.DTSTART)));
-            transactionn.setColour(Color.BLUE);
-            transactionn.save();
+            if(transactionns.size() != 0) {
+                for (Transactionn transactionn1 : transactionns) {
+                    if(transactionn1.getTime() == cursor.getLong(cursor.getColumnIndex(CalendarContract.Events.DTSTART))){
+                        flag = 1;
+                        break;
+                    }
+                }
+                if (flag == 0){
+                    transactionn.setTime(cursor.getLong(cursor.getColumnIndex(CalendarContract.Events.DTSTART)));
+                    transactionn.setTitle(cursor.getString(cursor.getColumnIndex(CalendarContract.Events.TITLE)));
+                    transactionn.setColour(Color.BLUE);
+                    transactionns.add(transactionn);
+                    transactionn.save();
+                }
+            }else {
+                transactionn.setTime(cursor.getLong(cursor.getColumnIndex(CalendarContract.Events.DTSTART)));
+                transactionn.setTitle(cursor.getString(cursor.getColumnIndex(CalendarContract.Events.TITLE)));
+                transactionn.setColour(Color.BLUE);
+                transactionns.add(transactionn);
+                transactionn.save();
+            }
         }
         cursor.close();
+        return transactionns;
     }
 
 

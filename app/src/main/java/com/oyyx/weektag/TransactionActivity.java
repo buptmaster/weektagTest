@@ -39,7 +39,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-
+/**
+ * 设置事件的Activity
+ *
+ */
 
 public class TransactionActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -62,23 +65,31 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
     private FloatingActionButton fab_time;
 
     private Calendar calendar = Calendar.getInstance();
+    //日期
     private DatePickerDialog datePickerDialog;
+    //颜色选择器
     private ColorPickerDialog colorPickerDialog;
+    //时间
     private TimePickerDialog timePickerDialog;
 
+    //显示日期和具体时间
     private TextView tv_date;
     private TextView tv_time;
 
+    //自定义照片
     private ImageView iv_photo;
 
 
+    //标题和备注
     private TextInputLayout til_title;
     private TextInputLayout til_memo;
 
     private Transactionn transactionn;
 
+
     private File mPhotoFile;
 
+    //响应toolbar item点击事件
     private Toolbar.OnMenuItemClickListener onMenuClick = new Toolbar.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem item) {
@@ -90,6 +101,7 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
                     return true;
                 }
 
+                //存入数据库
                 transactionn.setTime(CalendarUtils.timeToDate(year,month,day,hour,min));
                 transactionn.setColour(mSelectColor);
                 transactionn.setTitle(title);
@@ -98,6 +110,7 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
                     transactionn.setUri(uri.toString());
                 }else if(mPhotoFile != null){
                     try {
+                        //防止Uri.parse报空指针
                         transactionn.setUri(mPhotoFile.getCanonicalPath());
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -129,6 +142,7 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
 
         transactionn = new Transactionn();
 
+        //初始化view
         til_title = (TextInputLayout) findViewById(R.id.title_til);
         til_memo = (TextInputLayout) findViewById(R.id.memo_til);
 
@@ -200,10 +214,12 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 if (i == SELECT_FROM_ALBUM) {
+                                    //从相册选择图片
                                     Intent intent = new Intent(Intent.ACTION_PICK);
                                     intent.setType("image/*");
                                     startActivityForResult(Intent.createChooser(intent,"选择图片"),SELECT_FROM_ALBUM);
                                 }else {
+                                    //拍摄照片
                                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                                     mPhotoFile = TransactionLab.get().getPhotoFile(transactionn, TransactionActivity.this);
                                     Uri uri = Uri.fromFile(mPhotoFile);
@@ -221,7 +237,7 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-
+            //相册的回传
             if(requestCode == SELECT_FROM_ALBUM) {
                 uri = data.getData();
                 iv_photo.setBackgroundColor(Color.WHITE);
@@ -229,6 +245,7 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
                         .load(uri)
                         .into(iv_photo);
             } else if (requestCode == TAKE_PHOTOS) {
+                //相机的回传
                 if (mPhotoFile != null) {
                     Glide.with(this)
                             .load(mPhotoFile)

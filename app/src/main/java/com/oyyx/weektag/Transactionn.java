@@ -1,6 +1,6 @@
 package com.oyyx.weektag;
 
-import android.net.Uri;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -11,22 +11,28 @@ import java.util.UUID;
 
 /**
  * Created by 123 on 2017/8/22.
- * 防止excSql报错
+ * 防止excSql报错（transaction）
  *
  */
 
 public class Transactionn extends DataSupport implements Parcelable,Comparable<Transactionn> {
 
+    //唯一识别
     private String mUUID;
 
+    //标题
     private String title;
 
+    //备注
     private String memo;
 
+    //目标日期的毫秒数
     private long time;
 
+    //为事件指定的颜色
     private int colour;
 
+    //图片路径
     private String mUri;
 
     public Transactionn(){
