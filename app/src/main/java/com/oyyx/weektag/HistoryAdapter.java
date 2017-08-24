@@ -99,7 +99,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
 
             if(longs[0]<=0){
                 remaining_days_tv.setText(0+"");
-                item_layout.setCardBackgroundColor(item_layout.getResources().getColor(R.color.cardview_dark_background));
+                //item_layout.setCardBackgroundColor(item_layout.getResources().getColor(R.color.cardview_dark_background));
             }else {
                 remaining_days_tv.setText(longs[0] + "");
             }

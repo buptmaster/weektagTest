@@ -96,7 +96,7 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
                 transactionn.setMemo(memo);
                 if(uri != null) {
                     transactionn.setUri(uri.toString());
-                }else {
+                }else if(mPhotoFile != null){
                     try {
                         transactionn.setUri(mPhotoFile.getCanonicalPath());
                     } catch (IOException e) {

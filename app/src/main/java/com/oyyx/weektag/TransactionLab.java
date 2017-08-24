@@ -8,6 +8,7 @@ import android.util.Log;
 import org.litepal.crud.DataSupport;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,8 +37,15 @@ public class TransactionLab {
         return mTransactionns;
     }
 
+    public List<Transactionn> getTransactionnsByTime(){
+        //mTransactionns = DataSupport.where("time > ?","0").order("colour").find(Transactionn.class);
+        mTransactionns = DataSupport.findAll(Transactionn.class);
+        Collections.sort(mTransactionns);
+        return mTransactionns;
+    }
+
     public void deleteTransactions(){
-        DataSupport.deleteAll(Transactionn.class, "title = ?");
+        DataSupport.deleteAll(Transactionn.class);
     }
 
     public int deleteTransaction(String uuid){
@@ -49,10 +57,8 @@ public class TransactionLab {
         if (externalFileDir == null) {
             return null;
         }
-
         return new File(externalFileDir, transactionn.getPhotoName());
     }
-
 
 
 }

@@ -11,8 +11,10 @@ import android.text.TextUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -125,33 +127,6 @@ public class CalendarUtils {
         return id;
     }
 
-//    public static void deleteCalendarEvent(Context context, String title) {
-//        Cursor eventCursor = context.getContentResolver().query(Uri.parse(CALANDER_EVENT_URL), null, null, null, null);
-//        try {
-//            if (eventCursor == null)//查询返回空值
-//                return;
-//            if (eventCursor.getCount() > 0) {
-//                //遍历所有事件，找到title跟需要查询的title一样的项
-//                for (eventCursor.moveToFirst(); !eventCursor.isAfterLast(); eventCursor.moveToNext()) {
-//                    String eventTitle = eventCursor.getString(eventCursor.getColumnIndex("title"));
-//                    if (!TextUtils.isEmpty(title) && title.equals(eventTitle)) {
-//                        int id = eventCursor.getInt(eventCursor.getColumnIndex(CalendarContract.Calendars._ID));//取得id
-//                        Uri deleteUri = ContentUris.withAppendedId(Uri.parse(CALANDER_EVENT_URL), id);
-//                        int rows = context.getContentResolver().delete(deleteUri, null, null);
-//                        if (rows == -1) {
-//                            //事件删除失败
-//                            return;
-//                        }
-//                    }
-//                }
-//            }
-//        } finally {
-//            if (eventCursor != null) {
-//                eventCursor.close();
-//            }
-//        }
-//    }
-
     public static void addCalendarEvent(Context context,String title, String description, long beginTime){
         // 获取日历账户的id
         int calId = checkAndAddCalendarAccount(context);
@@ -208,5 +183,22 @@ public class CalendarUtils {
             }
         }
     }
+
+    public static void getCalendarEvent(Context context) {
+        Uri uri = Uri.parse(CALANDER_EVENT_URL);
+        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+        while (cursor.moveToNext()) {
+            Transactionn transactionn = new Transactionn();
+            if(cursor.getLong(cursor.getColumnIndex(CalendarContract.Events.DTSTART))<(new Date()).getTime()){
+                continue;
+            }
+            transactionn.setTitle(cursor.getString(cursor.getColumnIndex(CalendarContract.Events.TITLE)));
+            transactionn.setTime(cursor.getLong(cursor.getColumnIndex(CalendarContract.Events.DTSTART)));
+            transactionn.setColour(Color.BLUE);
+            transactionn.save();
+        }
+        cursor.close();
+    }
+
 
 }

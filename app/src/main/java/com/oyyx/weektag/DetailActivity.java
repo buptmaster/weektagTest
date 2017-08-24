@@ -2,14 +2,13 @@ package com.oyyx.weektag;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.net.Uri;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,9 +51,7 @@ public class DetailActivity extends AppCompatActivity {
         String memo = transactionn.getMemo();
         int color = transactionn.getColour();
         uri = transactionn.getUri();
-       // Uri uri = Uri.parse(transactionn.getUri());
         uuid = transactionn.getUUID();
-        Log.e("---__--_", "" + uri);
 
         long remainingTime = targetTime - (new Date()).getTime();
 
@@ -93,6 +90,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 CalendarUtils.addCalendarEvent(DetailActivity.this,transactionn.getTitle(),transactionn.getMemo(),transactionn.getTime());
+                Snackbar.make(getWindow().getDecorView(), "导出成功！", Snackbar.LENGTH_LONG).show();
             }
         });
     }

@@ -2,8 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_sort_by_time"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/action_sort_by_time"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_sort_default"
+        android:orderInCategory="90"
+        app:showAsAction="never"
+        android:title="@string/sort_by_default"/>
+
 </menu>

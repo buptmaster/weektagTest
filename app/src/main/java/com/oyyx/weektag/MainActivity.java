@@ -3,10 +3,15 @@ package com.oyyx.weektag;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,6 +32,7 @@ import com.bumptech.glide.Glide;
 import org.litepal.LitePal;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -34,12 +40,18 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private final String qqUrl = "mqqwpa://im/chat?chat_type=wpa&uin=768471488&version=1";
+
+    private final static int SORT_DEFAULT = 0;
+    private final static int SORT_BY_TIME = 1;
+
+    private int sortFlag = SORT_DEFAULT;
+
     private RecyclerView mRecyclerView;
     private HistoryAdapter mHistoryAdapter;
 
     private TextView username;
     private TextView emailaddress;
-
 
     private SharedPreferences sp;
 
@@ -50,7 +62,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         LitePal.initialize(this);
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -70,14 +81,14 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,TransactionActivity.class));
+                startActivity(new Intent(MainActivity.this, TransactionActivity.class));
             }
         });
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this,LoginActivity.class),0);
+                startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), 0);
             }
         });
 
@@ -85,7 +96,12 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
 
-        UpdateUI();
+        if(sortFlag == SORT_DEFAULT) {
+            UpdateUI();
+        }
+        else if(sortFlag == SORT_BY_TIME) {
+            UpdateUIByTime();
+        }
         sp = getApplicationContext().getSharedPreferences("userInfo", MODE_PRIVATE);
         setUserInfo(sp);
     }
@@ -93,7 +109,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        UpdateUI();
+        if(sortFlag == SORT_DEFAULT) {
+            UpdateUI();
+        }
+        else if(sortFlag == SORT_BY_TIME) {
+            UpdateUIByTime();
+        }
     }
 
     @Override
@@ -108,20 +129,22 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        int id = item.getItemId();
+        if (id == R.id.action_sort_by_time) {
+            UpdateUIByTime();
+            sortFlag = SORT_BY_TIME;
+            return true;
+        } else if (id == R.id.action_sort_default) {
+            UpdateUI();
+            sortFlag = SORT_DEFAULT;
             return true;
         }
 
@@ -131,17 +154,29 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+
         int id = item.getItemId();
 
         if (id == R.id.nav_import) {
+
+            CalendarUtils.getCalendarEvent(this);
 
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_feedback) {
 
-        } else if (id == R.id.nav_info) {
+            if (isAppInstalled(this, "com.tencent.mobileqq")) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(qqUrl)));
+            } else {
+                Snackbar.make(getWindow().getDecorView(), "没有安装QQ", Snackbar.LENGTH_LONG).show();
+            }
 
+        } else if (id == R.id.nav_info) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Info")
+                    .setView(R.layout.dialog_info);
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -150,11 +185,9 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == RESULT_OK){
+        if (resultCode == RESULT_OK) {
             if (requestCode == 0) {
                 String userName = data.getStringExtra("username");
                 String emailAddress = data.getStringExtra("emailaddress");
@@ -163,28 +196,26 @@ public class MainActivity extends AppCompatActivity
                 if (userName == null || emailAddress == null) {
                     username.setText("未知用户");
                     emailaddress.setText("未知邮箱");
-                }else {
-
+                } else {
                     username.setText(userName);
                     emailaddress.setText(emailAddress);
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString("username", userName);
                     editor.putString("emailaddress", emailAddress);
-
                     editor.apply();
-                    Snackbar.make(getWindow().getDecorView(),"欢迎，"+ userName,Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(getWindow().getDecorView(), "欢迎，" + userName, Snackbar.LENGTH_LONG).show();
                 }
             }
         }
     }
 
-    private void setUserInfo(SharedPreferences sp){
+    private void setUserInfo(SharedPreferences sp) {
         username.setText(sp.getString("username", "未知用户"));
         emailaddress.setText(sp.getString("emailaddress", "未知邮箱"));
 
     }
 
-    private void UpdateUI(){
+    private void UpdateUI() {
         TransactionLab transactionLab = TransactionLab.get();
         List<Transactionn> transactionns = transactionLab.getTransactionns();
 
@@ -193,11 +224,38 @@ public class MainActivity extends AppCompatActivity
         if (mHistoryAdapter == null) {
             mHistoryAdapter = new HistoryAdapter(transactionns);
             mRecyclerView.setAdapter(mHistoryAdapter);
-        }else {
+        } else {
             mHistoryAdapter.setTransactionns(transactionns);
             mHistoryAdapter.notifyDataSetChanged();
+
         }
 
     }
 
+    private void UpdateUIByTime() {
+        TransactionLab transactionLab = TransactionLab.get();
+        List<Transactionn> transactionns = transactionLab.getTransactionnsByTime();
+
+        if (mHistoryAdapter == null) {
+            mHistoryAdapter = new HistoryAdapter(transactionns);
+            mRecyclerView.setAdapter(mHistoryAdapter);
+        } else {
+            mHistoryAdapter.setTransactionns(transactionns);
+            mHistoryAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private boolean isAppInstalled(Context context, String packageName) {
+        final PackageManager packageManager = context.getPackageManager();
+        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
+        List<String> pName = new ArrayList<String>();
+        if (pinfo != null) {
+            for (int i = 0; i < pinfo.size(); i++) {
+                String pn = pinfo.get(i).packageName;
+                pName.add(pn);
+            }
+        }
+        return pName.contains(packageName);
+    }
 }
+

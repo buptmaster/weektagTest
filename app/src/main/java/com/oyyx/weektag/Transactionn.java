@@ -3,6 +3,7 @@ package com.oyyx.weektag;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import org.litepal.crud.DataSupport;
 
@@ -14,7 +15,7 @@ import java.util.UUID;
  *
  */
 
-public class Transactionn extends DataSupport implements Parcelable {
+public class Transactionn extends DataSupport implements Parcelable,Comparable<Transactionn> {
 
     private String mUUID;
 
@@ -121,4 +122,12 @@ public class Transactionn extends DataSupport implements Parcelable {
             return new Transactionn[size];
         }
     };
+
+    @Override
+    public int compareTo(@NonNull Transactionn transactionn) {
+        Long newTime = transactionn.getTime();
+        Long inputTime = getTime();
+        return inputTime.compareTo(newTime);
+    }
+
 }
