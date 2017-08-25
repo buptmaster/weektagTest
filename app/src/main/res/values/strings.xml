@@ -12,4 +12,5 @@
     <string name="bad_thing">祝愿失意的时刻总会过去</string>
     <string name="njupt">南京邮电大学</string>
     <string name="sort_by_default">默认排序</string>
+    <string name="deleteAll">删除所有事件</string>
 </resources>

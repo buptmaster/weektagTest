@@ -6,6 +6,7 @@ import android.os.Vibrator;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,7 +43,11 @@ public class DetailActivity extends AppCompatActivity {
 
     private ImageView detail_iv;
 
+    private NestedScrollView mNestedScrollView;
+
     private Transactionn transactionn;
+
+    private WaveView mWaveView;
 
     //照片的特定uri
     private String uri;
@@ -85,6 +90,15 @@ public class DetailActivity extends AppCompatActivity {
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_layout);
         detail_iv = (ImageView) findViewById(R.id.detail_iv);
         TextView detail_tv = (TextView) findViewById(R.id.detail_memo);
+        mNestedScrollView = (NestedScrollView) findViewById(R.id.sv);
+        mWaveView = (WaveView) findViewById(R.id.wave);
+
+        mNestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                mWaveView.performClick();
+            }
+        });
 
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();

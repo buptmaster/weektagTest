@@ -192,7 +192,7 @@ public class CalendarUtils {
     }
 
     //获取日历中的日程
-    public static ArrayList<Transactionn> getCalendarEvent(Context context,ArrayList<Transactionn> transactionns) {
+    public static List<Transactionn> getCalendarEvent(Context context,List<Transactionn> transactionns) {
         Uri uri = Uri.parse(CALANDER_EVENT_URL);
         int flag = 0;
         Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);

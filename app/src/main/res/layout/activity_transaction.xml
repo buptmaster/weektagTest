@@ -36,7 +36,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.v7.widget.CardView
-        style="@style/CardView.Light"
+        style="@style/MyCardView"
         android:background="?android:attr/selectableItemBackground"
         android:layout_width="300dp"
         android:layout_height="48dp"
@@ -185,7 +185,7 @@
 
     <android.support.v7.widget.CardView
         android:background="?android:attr/selectableItemBackground"
-        style="@style/CardView.Light"
+        style="@style/MyCardView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_gravity="center"

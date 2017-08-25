@@ -11,5 +11,9 @@
         android:orderInCategory="90"
         app:showAsAction="never"
         android:title="@string/sort_by_default"/>
-
+    <item
+        android:id="@+id/action_delete_all_transactions"
+        android:orderInCategory="80"
+        app:showAsAction="never"
+        android:title="@string/deleteAll"/>
 </menu>

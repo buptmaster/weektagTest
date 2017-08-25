@@ -1,19 +1,23 @@
 package com.oyyx.weektag;
 
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
+
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -24,6 +28,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,7 +59,7 @@ public class MainActivity extends AppCompatActivity
     private TextView username;
     private TextView emailaddress;
 
-    private ArrayList<Transactionn> mTransactionns_temp = new ArrayList<>();
+    private List<Transactionn> mTransactionns_temp;
 
     //存储用户名及其邮箱
     private SharedPreferences sp;
@@ -67,6 +72,9 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         LitePal.initialize(this);
 
+
+
+        mTransactionns_temp = TransactionLab.get().getTransactionns();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -85,7 +93,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, TransactionActivity.class));
+                startActivity(new Intent(MainActivity.this,TransactionActivity.class));
             }
         });
 
@@ -149,6 +157,20 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.action_sort_default) {
             UpdateUI();
             sortFlag = SORT_DEFAULT;
+            return true;
+        }else if(id == R.id.action_delete_all_transactions){
+            new AlertDialog.Builder(this)
+                    .setTitle("确认")
+                    .setMessage("即将删除所有事件")
+                    .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            TransactionLab.get().deleteTransactions();
+                        }
+                    })
+                    .setNegativeButton("取消",null)
+                    .show();
+            UpdateUI();
             return true;
         }
 
@@ -227,7 +249,6 @@ public class MainActivity extends AppCompatActivity
         TransactionLab transactionLab = TransactionLab.get();
         List<Transactionn> transactionns = transactionLab.getTransactionns();
 
-        Log.e("___________", transactionns.size() + "");
 
         if (mHistoryAdapter == null) {
             mHistoryAdapter = new HistoryAdapter(transactionns);
@@ -253,6 +274,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //查找特定app是否被安装
     private boolean isAppInstalled(Context context, String packageName) {
         final PackageManager packageManager = context.getPackageManager();
         List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
