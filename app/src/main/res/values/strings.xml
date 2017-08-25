@@ -13,4 +13,7 @@
     <string name="njupt">南京邮电大学</string>
     <string name="sort_by_default">默认排序</string>
     <string name="deleteAll">删除所有事件</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="configure">Configure</string>
+    <string name="add_widget">Add widget</string>
 </resources>

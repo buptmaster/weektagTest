@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="com.oyyx.weektag">
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_CALENDAR"/>
@@ -35,9 +36,11 @@
             android:name=".TransactionActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".DetailActivity"
-                  android:theme="@style/myTheme">
+        <activity
+            android:name=".DetailActivity"
+            android:theme="@style/myTheme">
         </activity>
+
     </application>
 
 </manifest>

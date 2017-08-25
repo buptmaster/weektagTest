@@ -70,35 +70,31 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
 
         Transactionn mTransactionn;
 
-        private TextView title_tv, memo_tv, remaining_days_tv;
+        private TextView title_tv, memo_tv, remaining_days_tv,unit;
         private FloatingActionButton color_fab;
 
-        private FrameLayout title_dash_line;
         private CardView item_layout;
 
         private ImageView date_bg;
+
+        private View mView;
 
 
 
         public TransactionHolder(View view) {
             super(view);
+
+            mView = view;
             title_tv = (TextView) view.findViewById(R.id.history_title);
             memo_tv = (TextView) view.findViewById(R.id.history_memo);
             remaining_days_tv = (TextView) view.findViewById(R.id.tv_remaining_days);
+            unit = (TextView) view.findViewById(R.id.unit_transaction);
+
             color_fab = (FloatingActionButton) view.findViewById(R.id.fab_color_use);
 
-            title_dash_line = (FrameLayout) view.findViewById(R.id.dash_line_title);
             item_layout = (CardView) view.findViewById(R.id.item_layout);
 
             date_bg = (ImageView) view.findViewById(R.id.date_bg);
-
-            //加粗字体
-            TextPaint paint = remaining_days_tv.getPaint();
-            paint.setFakeBoldText(true);
-            TextPaint paint1 = title_tv.getPaint();
-            paint1.setFakeBoldText(true);
-
-            Glide.with(view).load(R.drawable.date_bg).into(date_bg);
 
 
         }
@@ -110,16 +106,24 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
 
             long[] longs = CalendarUtils.getTime(transactionn.getTime());
 
-            if(longs[0]<=0){
-                remaining_days_tv.setText(0+"");
+            if(longs[0]==0){
+                if(longs[1]==0){
+                    remaining_days_tv.setText("0");
+                    unit.setText("小时");
+                    Glide.with(mView).load(R.drawable.red_bg).into(date_bg);
+                }else{
+                    remaining_days_tv.setText(longs[1]+"");
+                    unit.setText("小时");
+                    Glide.with(mView).load(R.drawable.yellow_bg).into(date_bg);
+                }
             }else {
                 remaining_days_tv.setText(longs[0] + "");
+                unit.setText("天");
+                Glide.with(mView).load(R.drawable.date_bg).into(date_bg);
             }
             title_tv.setText(transactionn.getTitle());
             color_fab.setBackgroundTintList(ColorStateList.valueOf(transactionn.getColour()));
             if (transactionn.getMemo() != null) {
-                memo_tv.setVisibility(View.VISIBLE);
-                title_dash_line.setVisibility(View.VISIBLE);
                 memo_tv.setText(transactionn.getMemo());
             }
         }

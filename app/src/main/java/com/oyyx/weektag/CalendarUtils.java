@@ -53,6 +53,11 @@ public class CalendarUtils {
 
         long elapsedSeconds = different / secondsInMilli;
 
+        if(elapsedDays<0||elapsedHours<0||elapsedMinutes<0||elapsedSeconds<0){
+            return new long[]{0,0,0,0};
+
+        }
+
         return new long[]{elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds};
     }
 

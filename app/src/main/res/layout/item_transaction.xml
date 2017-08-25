@@ -51,6 +51,7 @@
                 android:layout_height="2dp"/>
 
             <TextView
+                android:textStyle="italic"
                 android:id="@+id/history_memo"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
@@ -79,16 +80,19 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
                     android:id="@+id/tv_remaining_days"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
                     android:layout_weight="2"
                     android:gravity="center"
-                    android:text="91"
                     android:textSize="35sp"/>
 
                 <TextView
+                    android:textColor="@color/white"
+                    android:id="@+id/unit_transaction"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
