@@ -41,6 +41,26 @@
             android:theme="@style/myTheme">
         </activity>
 
+        <service
+            android:name=".WidgetService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.WIDGET_SERVICE"/>
+            </intent-filter>
+        </service>
+
+        <receiver android:name=".WeekTagWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE_SERVICE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_DAY"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/week_tag_widget_info"/>
+        </receiver>
     </application>
 
 </manifest>

@@ -28,15 +28,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
-import android.widget.ImageView;
+
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+
 
 import org.litepal.LitePal;
 
-import java.io.File;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,6 +71,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         LitePal.initialize(this);
 
+        startService(new Intent("android.appwidget.action.WIDGET_SERVICE").setPackage("com.oyyx.weektag"));
 
 
         mTransactionns_temp = TransactionLab.get().getTransactionns();
