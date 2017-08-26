@@ -10,10 +10,26 @@
     tools:showIn="@layout/app_bar_main">
 
     <android.support.v7.widget.RecyclerView
+        android:visibility="visible"
         android:id="@+id/recycle_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteY="8dp"
         tools:layout_editor_absoluteX="8dp"/>
+
+    <FrameLayout
+        android:id="@+id/empty"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:textColor="@color/gray"
+            android:text="点击下方按钮添加事件"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
 
 </FrameLayout>

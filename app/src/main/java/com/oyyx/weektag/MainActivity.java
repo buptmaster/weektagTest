@@ -1,6 +1,6 @@
 package com.oyyx.weektag;
 
-import android.app.ActivityOptions;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,7 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
+
 import android.os.Bundle;
 
 import android.support.design.widget.FloatingActionButton;
@@ -17,8 +17,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Explode;
-import android.util.Log;
+
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -29,6 +28,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 
@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity
 
     private RecyclerView mRecyclerView;
     private HistoryAdapter mHistoryAdapter;
+    private FrameLayout emptyView;
 
     private TextView username;
     private TextView emailaddress;
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity
 
 
         mTransactionns_temp = TransactionLab.get().getTransactionns();
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -104,9 +106,11 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        emptyView = (FrameLayout) findViewById(R.id.empty);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycle_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
+
 
         if(sortFlag == SORT_DEFAULT) {
             UpdateUI();
@@ -249,6 +253,15 @@ public class MainActivity extends AppCompatActivity
         TransactionLab transactionLab = TransactionLab.get();
         List<Transactionn> transactionns = transactionLab.getTransactionns();
 
+        if (mTransactionns_temp.size() == 0){
+            emptyView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        }else {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+        }
+
+
 
         if (mHistoryAdapter == null) {
             mHistoryAdapter = new HistoryAdapter(transactionns);
@@ -264,6 +277,15 @@ public class MainActivity extends AppCompatActivity
     private void UpdateUIByTime() {
         TransactionLab transactionLab = TransactionLab.get();
         List<Transactionn> transactionns = transactionLab.getTransactionnsByTime();
+
+        if (mTransactionns_temp.size() == 0){
+            emptyView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        }else {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+        }
+
 
         if (mHistoryAdapter == null) {
             mHistoryAdapter = new HistoryAdapter(transactionns);

@@ -42,7 +42,8 @@ public class WidgetService extends Service {
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                sendUpdate();
+                if (mTransactionns.size() !=0)
+                    sendUpdate();
             }
         };
 
@@ -53,8 +54,8 @@ public class WidgetService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e("-------->","ServiceStartCommand");
-
-        sendUpdate();
+        if (mTransactionns.size() !=0)
+            sendUpdate();
 
         return super.onStartCommand(intent, flags, startId);
     }
