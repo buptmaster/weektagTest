@@ -21,7 +21,7 @@
 
     <TextView
         android:textSize="25sp"
-        android:text="BG304小组"
+        android:text="BR304小组"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

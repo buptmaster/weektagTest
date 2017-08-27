@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by 123 on 2017/8/22.adapter
@@ -123,8 +124,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
             }
             title_tv.setText(transactionn.getTitle());
             color_fab.setBackgroundTintList(ColorStateList.valueOf(transactionn.getColour()));
-            if (transactionn.getMemo() != null) {
+            if (!transactionn.getMemo().equals("")) {
                 memo_tv.setText(transactionn.getMemo());
+            }else {
+                Random random = new Random();
+                int[] strs = {R.string.good_thing, R.string.bad_thing};
+                memo_tv.setText(strs[random.nextInt(1)]);
             }
         }
     }

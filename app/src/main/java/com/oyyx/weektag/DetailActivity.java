@@ -113,7 +113,7 @@ public class DetailActivity extends AppCompatActivity {
             mCountdownView.start(remainingTime);
         }
 
-        if (memo != null) {
+        if (!memo.equals("")) {
             detail_tv.setText(memo);
         }else {
             int[] str = {R.string.good_thing,R.string.bad_thing};

@@ -14,16 +14,19 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * Implementation of App Widget functionality.
+ * 桌面小部件
  */
 public class WeekTagWidget extends AppWidgetProvider {
 
     private static final String TAG = "WeekTagWidget";
 
+    //启动widgetService
     private Intent WIDGET_SERVICE = new Intent("android.appwidget.action.WIDGET_SERVICE");
 
+    //更新天数广播
     private final String UPDATE_TIME = "android.appwidget.action.APPWIDGET_DAY";
 
+    //接受服务传来的接收transaction的广播
     private final String UPDATE = "android.appwidget.action.APPWIDGET_UPDATE_SERVICE";
 
     private static Set idSet = new HashSet();
@@ -49,9 +52,9 @@ public class WeekTagWidget extends AppWidgetProvider {
             long times[] = CalendarUtils.getTime(mTransaction.getTime());
             days = times[0];
             views.setTextViewText(R.id.widget_time, days + "");
-            views.setImageViewResource(R.id.widget_bg,R.drawable.background_2);
+            views.setImageViewResource(R.id.widget_bg,R.drawable.widget_linear);
             views.setOnClickPendingIntent(R.id.widget_click,getPendingIntent(context));
-            // Instruct the widget manager to update the widget
+            // 更新widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
     }
@@ -69,6 +72,8 @@ public class WeekTagWidget extends AppWidgetProvider {
         //显式启动service
         WIDGET_SERVICE.setPackage("com.oyyx.weektag");
         context.startService(WIDGET_SERVICE);
+
+        //启动系统闹钟服务，每天更新widget的天数
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(UPDATE_TIME);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
@@ -98,6 +103,7 @@ public class WeekTagWidget extends AppWidgetProvider {
         }
     }
 
+    //请求跳到下一个事件的显示
     private PendingIntent getPendingIntent(Context context) {
         return PendingIntent.getBroadcast(context, 0, new Intent("android.appwidget.action.REQUEST_UPDATE"), 0);
 
