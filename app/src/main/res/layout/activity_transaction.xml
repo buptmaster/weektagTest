@@ -52,7 +52,7 @@
             android:orientation="horizontal">
 
             <TextView
-
+                android:textStyle="bold"
                 android:id="@+id/date_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

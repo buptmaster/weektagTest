@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.provider.CalendarContract;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,7 +37,9 @@ public class CalendarUtils {
 
     //将毫秒数转换称天数，小时数，分钟数，秒数
     public static long[] getTime(long time) {
-        long different = time - (new Date()).getTime();
+        long different = time - System.currentTimeMillis();
+
+        Log.e("342234235", "getTime: "+System.currentTimeMillis());
         long secondsInMilli = 1000;
         long minutesInMilli = secondsInMilli * 60;
         long hoursInMilli = minutesInMilli * 60;
@@ -53,9 +56,10 @@ public class CalendarUtils {
 
         long elapsedSeconds = different / secondsInMilli;
 
+        Log.e("_____", elapsedDays + " " + elapsedHours + " " + elapsedMinutes);
+
         if(elapsedDays<0||elapsedHours<0||elapsedMinutes<0||elapsedSeconds<0){
             return new long[]{0,0,0,0};
-
         }
 
         return new long[]{elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds};
@@ -63,6 +67,8 @@ public class CalendarUtils {
 
     //将一个特定日期转换成毫秒数
     public static long timeToDate(int year, int month, int day, int hour, int min) {
+
+        Log.e("erwer", month+"");
 
         String monthstr = month + "";
         String daystr = day + "";
@@ -82,9 +88,11 @@ public class CalendarUtils {
         Date date = null;
         try {
             date = format.parse(str);
+            Log.e("--------->date", date.getTime()+"");
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        Log.d("e", "timeToDate: "+date.toString());
         return date.getTime();
     }
 

@@ -42,7 +42,6 @@ public class WidgetService extends Service {
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (mTransactionns.size() !=0)
                     sendUpdate();
             }
         };
@@ -54,7 +53,7 @@ public class WidgetService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e("-------->","ServiceStartCommand");
-        if (mTransactionns.size() !=0)
+
             sendUpdate();
 
         return super.onStartCommand(intent, flags, startId);
@@ -68,12 +67,14 @@ public class WidgetService extends Service {
 
     private void sendUpdate() {
         mTransactionns = TransactionLab.get().getTransactionns();
-        Intent updateIntent = new Intent("android.appwidget.action.APPWIDGET_UPDATE_SERVICE");
-        updateIntent.putExtra("transaction", mTransactionns.get(position));
-        mContext.sendBroadcast(updateIntent);
-        position++;
-        if(position == mTransactionns.size()){
-            position = 0;
+        if(mTransactionns.size()!=0) {
+            Intent updateIntent = new Intent("android.appwidget.action.APPWIDGET_UPDATE_SERVICE");
+            updateIntent.putExtra("transaction", mTransactionns.get(position));
+            mContext.sendBroadcast(updateIntent);
+            position++;
+            if (position == mTransactionns.size()) {
+                position = 0;
+            }
         }
     }
 }

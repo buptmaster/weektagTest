@@ -59,7 +59,8 @@ public class MainActivity extends AppCompatActivity
     private TextView username;
     private TextView emailaddress;
 
-    private List<Transactionn> mTransactionns_temp;
+    private List<Transactionn> transactionns;
+
 
     //存储用户名及其邮箱
     private SharedPreferences sp;
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity
         startService(new Intent("android.appwidget.action.WIDGET_SERVICE").setPackage("com.oyyx.weektag"));
 
 
-        mTransactionns_temp = TransactionLab.get().getTransactionns();
+        transactionns = TransactionLab.get().getTransactionns();
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -170,11 +171,11 @@ public class MainActivity extends AppCompatActivity
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             TransactionLab.get().deleteTransactions();
+                            UpdateUI();
                         }
                     })
                     .setNegativeButton("取消",null)
                     .show();
-            UpdateUI();
             return true;
         }
 
@@ -188,7 +189,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_import) {
-           mTransactionns_temp = CalendarUtils.getCalendarEvent(this,mTransactionns_temp);
+           transactionns = CalendarUtils.getCalendarEvent(this,transactionns);
             if(sortFlag == SORT_DEFAULT) {
                 UpdateUI();
             }
@@ -251,17 +252,15 @@ public class MainActivity extends AppCompatActivity
 
     private void UpdateUI() {
         TransactionLab transactionLab = TransactionLab.get();
-        List<Transactionn> transactionns = transactionLab.getTransactionns();
+        transactionns = transactionLab.getTransactionns();
 
-        if (mTransactionns_temp.size() == 0){
+        if (transactionns.size() == 0){
             emptyView.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
         }else {
             mRecyclerView.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
         }
-
-
 
         if (mHistoryAdapter == null) {
             mHistoryAdapter = new HistoryAdapter(transactionns);
@@ -276,9 +275,9 @@ public class MainActivity extends AppCompatActivity
 
     private void UpdateUIByTime() {
         TransactionLab transactionLab = TransactionLab.get();
-        List<Transactionn> transactionns = transactionLab.getTransactionnsByTime();
+        transactionns = transactionLab.getTransactionnsByTime();
 
-        if (mTransactionns_temp.size() == 0){
+        if (transactionns.size() == 0){
             emptyView.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
         }else {

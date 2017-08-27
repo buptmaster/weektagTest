@@ -231,6 +231,7 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
             }
         });
 
+
     }
 
     @Override
@@ -267,7 +268,7 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
     private String getDate(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
         year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH);
+        month = calendar.get(Calendar.MONTH)+1;
         day = calendar.get(Calendar.DAY_OF_MONTH);
 
         return sdf.format(new Date());
@@ -284,11 +285,10 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
         this.year = year;
-        this.month = month;
+        this.month = month + 1;
         this.day = day;
-        TextPaint paint = tv_date.getPaint();
-        paint.setFakeBoldText(true);
-        tv_date.setText(year+"年"+month+"月"+day+"日");
+
+        tv_date.setText(this.year+"年"+this.month+"月"+this.day+"日");
     }
 
     @Override
@@ -303,8 +303,6 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
         if (min < 10) {
             minstr = "0" + minstr;
         }
-        TextPaint paint = tv_time.getPaint();
-        paint.setFakeBoldText(true);
         tv_time.setText(hourstr+":"+minstr);
     }
 }
