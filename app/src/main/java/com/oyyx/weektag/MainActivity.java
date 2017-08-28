@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity
         startService(new Intent("android.appwidget.action.WIDGET_SERVICE").setPackage("com.oyyx.weektag"));
 
 
-        transactionns = TransactionLab.get().getTransactionns();
+        transactionns = TransactionLab.get().getTransactionnsByDefault();
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity
 
     private void UpdateUI() {
         TransactionLab transactionLab = TransactionLab.get();
-        transactionns = transactionLab.getTransactionns();
+        transactionns = transactionLab.getTransactionnsByDefault();
 
         if (transactionns.size() == 0){
             emptyView.setVisibility(View.VISIBLE);

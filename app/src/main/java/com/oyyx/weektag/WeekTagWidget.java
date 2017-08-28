@@ -46,7 +46,7 @@ public class WeekTagWidget extends AppWidgetProvider {
 
             appWidgetId = ((Integer) iterator.next()).intValue();
 
-            // Construct the RemoteViews object
+            //构建remoteview
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.week_tag_widget);
             views.setTextViewText(R.id.widget_title, mTransaction.getTitle());
             long times[] = CalendarUtils.getTime(mTransaction.getTime());

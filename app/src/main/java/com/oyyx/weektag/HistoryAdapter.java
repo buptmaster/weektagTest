@@ -42,9 +42,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
         transactionHolder.item_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Transactionn transactionn = mTransactionns.get(transactionHolder.getAdapterPosition());
+                //Transactionn transactionn = mTransactionns.get(transactionHolder.getAdapterPosition());
                 Intent intent = new Intent(parent.getContext(), DetailActivity.class);
-                intent.putExtra("transaction",transactionn);
+                intent.putExtra("position",transactionHolder.getAdapterPosition());
                 parent.getContext().startActivity(intent);
             }
         });

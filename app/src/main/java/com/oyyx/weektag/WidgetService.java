@@ -1,5 +1,8 @@
 package com.oyyx.weektag;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,10 +37,10 @@ public class WidgetService extends Service {
 
     @Override
     public void onCreate() {
-        Log.e("-------->","ServiceCreated");
         mContext = getApplicationContext();
-        mTransactionns = TransactionLab.get().getTransactionns();
         LitePal.initialize(this);
+        mTransactionns = TransactionLab.get().getTransactionnsByDefault();
+
 
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -66,7 +69,7 @@ public class WidgetService extends Service {
     }
 
     private void sendUpdate() {
-        mTransactionns = TransactionLab.get().getTransactionns();
+        mTransactionns = TransactionLab.get().getTransactionnsByDefault();
         if(mTransactionns.size()!=0) {
             Intent updateIntent = new Intent("android.appwidget.action.APPWIDGET_UPDATE_SERVICE");
             updateIntent.putExtra("transaction", mTransactionns.get(position));
@@ -77,4 +80,9 @@ public class WidgetService extends Service {
             }
         }
     }
+
+    private void sendNotice(){
+    }
+
+    private void sendCountDown(){}
 }
