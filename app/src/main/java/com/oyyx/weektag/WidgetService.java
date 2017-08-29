@@ -79,6 +79,7 @@ public class WidgetService extends Service {
         }
 
 
+
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -117,7 +118,5 @@ public class WidgetService extends Service {
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
         manager.notify(id, notification);
     }
-    private void sendCountDownNotice(Transactionn transactionn){
 
-    }
 }
