@@ -8,12 +8,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.support.annotation.IntDef;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import org.litepal.LitePal;
 
+import java.util.Date;
 import java.util.List;
 
 public class WidgetService extends Service {
@@ -45,19 +48,36 @@ public class WidgetService extends Service {
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals("android.appwidget.action.REQUEST_UPDATE"))
                     sendUpdate();
+                else if(intent.getAction().equals("closeForegroundService")){
+                    stopForeground(true);
+                }
             }
         };
 
-        registerReceiver(mBroadcastReceiver,new IntentFilter("android.appwidget.action.REQUEST_UPDATE"));
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.appwidget.action.REQUEST_UPDATE");
+        intentFilter.addAction("closeForegroundService");
+        registerReceiver(mBroadcastReceiver,intentFilter);
+
         super.onCreate();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("-------->","ServiceStartCommand");
 
-            sendUpdate();
+        sendUpdate();
+
+        mTransactionns = TransactionLab.get().getTransactionnsByDefault();
+        int id = 1;
+        for(Transactionn transactionn : mTransactionns){
+            if (new Date().getTime() - transactionn.getTime()>=0){
+                sendCompleteNotice(transactionn,id);
+                id++;
+            }
+        }
+
 
         return super.onStartCommand(intent, flags, startId);
     }
@@ -81,8 +101,23 @@ public class WidgetService extends Service {
         }
     }
 
-    private void sendNotice(){
-    }
+    private void sendCompleteNotice(Transactionn transactionn,int id){
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
 
-    private void sendCountDown(){}
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        Notification notification = new Notification.Builder(this)
+                .setContentTitle("事件已完成")
+                .setContentText(transactionn.getTitle() + " 已完成，请前往删除事件")
+                .setWhen(System.currentTimeMillis())
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_tag))
+                .setContentIntent(pendingIntent)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setAutoCancel(true)
+                .build();
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        manager.notify(id, notification);
+    }
+    private void sendCountDownNotice(Transactionn transactionn){
+
+    }
 }
