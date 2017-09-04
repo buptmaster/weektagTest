@@ -12,6 +12,7 @@ import android.net.Uri;
 
 import android.os.Bundle;
 
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -32,6 +33,10 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 
+import com.oyyx.weektag.Adapter.HistoryAdapter;
+import com.oyyx.weektag.DateBase.TransactionLab;
+import com.oyyx.weektag.DateBase.Transactionn;
+import com.oyyx.weektag.Utils.CalendarUtils;
 
 import org.litepal.LitePal;
 
@@ -195,9 +200,7 @@ public class MainActivity extends AppCompatActivity
             else if(sortFlag == SORT_BY_TIME) {
                 UpdateUIByTime();
             }
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_feedback) {
+        }  else if (id == R.id.nav_feedback) {
 
             if (isAppInstalled(this, "com.tencent.mobileqq")) {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(qqUrl)));
@@ -307,5 +310,6 @@ public class MainActivity extends AppCompatActivity
         }
         return pName.contains(packageName);
     }
+
 }
 

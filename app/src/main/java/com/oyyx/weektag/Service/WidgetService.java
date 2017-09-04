@@ -1,4 +1,4 @@
-package com.oyyx.weektag;
+package com.oyyx.weektag.Service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -10,9 +10,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
-import android.support.annotation.IntDef;
-import android.util.Log;
-import android.widget.RemoteViews;
+
+import com.oyyx.weektag.MainActivity;
+import com.oyyx.weektag.R;
+import com.oyyx.weektag.DateBase.TransactionLab;
+import com.oyyx.weektag.DateBase.Transactionn;
 
 import org.litepal.LitePal;
 
@@ -34,7 +36,6 @@ public class WidgetService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
         return null;
     }
 
@@ -77,8 +78,6 @@ public class WidgetService extends Service {
                 id++;
             }
         }
-
-
 
         return super.onStartCommand(intent, flags, startId);
     }

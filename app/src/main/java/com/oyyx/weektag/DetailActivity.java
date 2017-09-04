@@ -3,7 +3,6 @@ package com.oyyx.weektag;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Vibrator;
 import android.provider.MediaStore;
@@ -25,6 +24,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.oyyx.weektag.DateBase.TransactionLab;
+import com.oyyx.weektag.DateBase.Transactionn;
+import com.oyyx.weektag.Utils.CalendarUtils;
+import com.oyyx.weektag.View.WaveView;
 
 import org.litepal.LitePal;
 
@@ -185,10 +188,10 @@ public class DetailActivity extends AppCompatActivity {
             mCountdownView.start(remainingTime);
         }
 
-        if (!memo.equals("")) {
+        if (memo != null) {
             detail_tv.setText(memo);
-        }else {
-            int[] str = {R.string.good_thing,R.string.bad_thing};
+        } else {
+            int[] str = {R.string.good_thing, R.string.bad_thing};
             Random r = new Random();
             detail_tv.setText(str[r.nextInt(1)]);
         }

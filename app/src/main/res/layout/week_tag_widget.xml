@@ -54,4 +54,20 @@
 
     </LinearLayout>
 
+    <FrameLayout
+        android:id="@+id/no_transaction_widget"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:textSize="25sp"
+            android:text="点击添加事件！"
+            android:gravity="center"
+            android:id="@+id/add_transaction_widget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </FrameLayout>
+
 </FrameLayout>

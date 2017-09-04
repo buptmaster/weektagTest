@@ -15,8 +15,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.TextPaint;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +24,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.oyyx.weektag.DateBase.TransactionLab;
+import com.oyyx.weektag.DateBase.Transactionn;
+import com.oyyx.weektag.Utils.CalendarUtils;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 

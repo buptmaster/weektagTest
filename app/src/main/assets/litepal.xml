@@ -3,6 +3,6 @@
     <dbname value="transactionns"/>
     <version value="1"/>
     <list>
-        <mapping class="com.oyyx.weektag.Transactionn"/>
+        <mapping class="com.oyyx.weektag.DateBase.Transactionn"/>
     </list>
 </litepal>

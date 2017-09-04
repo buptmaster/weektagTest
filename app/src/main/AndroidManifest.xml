@@ -43,7 +43,7 @@
         </activity>
 
         <service
-            android:name=".WidgetService"
+            android:name=".Service.WidgetService"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -51,7 +51,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".WeekTagWidget">
+        <receiver android:name=".Widget.WeekTagWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE_SERVICE"/>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>

@@ -1,22 +1,21 @@
-package com.oyyx.weektag;
+package com.oyyx.weektag.Adapter;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.oyyx.weektag.DateBase.Transactionn;
+import com.oyyx.weektag.DetailActivity;
+import com.oyyx.weektag.R;
+import com.oyyx.weektag.Utils.CalendarUtils;
 
 import java.util.List;
 import java.util.Random;
@@ -124,7 +123,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
             }
             title_tv.setText(transactionn.getTitle());
             color_fab.setBackgroundTintList(ColorStateList.valueOf(transactionn.getColour()));
-            if (!transactionn.getMemo().equals("")) {
+            if (transactionn.getMemo() != null) {
                 memo_tv.setText(transactionn.getMemo());
             }else {
                 Random random = new Random();

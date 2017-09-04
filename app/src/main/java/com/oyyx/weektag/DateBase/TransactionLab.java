@@ -1,9 +1,8 @@
-package com.oyyx.weektag;
+package com.oyyx.weektag.DateBase;
 
 
 import android.content.Context;
 import android.os.Environment;
-import android.text.method.TransformationMethod;
 import android.util.Log;
 
 import org.litepal.crud.DataSupport;

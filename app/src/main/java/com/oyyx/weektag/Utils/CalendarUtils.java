@@ -1,4 +1,4 @@
-package com.oyyx.weektag;
+package com.oyyx.weektag.Utils;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -7,12 +7,12 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.provider.CalendarContract;
-import android.text.TextUtils;
 import android.util.Log;
+
+import com.oyyx.weektag.DateBase.Transactionn;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -205,7 +205,7 @@ public class CalendarUtils {
     }
 
     //获取日历中的日程
-    public static List<Transactionn> getCalendarEvent(Context context,List<Transactionn> transactionns) {
+    public static List<Transactionn> getCalendarEvent(Context context, List<Transactionn> transactionns) {
         Uri uri = Uri.parse(CALANDER_EVENT_URL);
         int flag = 0;
         Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);

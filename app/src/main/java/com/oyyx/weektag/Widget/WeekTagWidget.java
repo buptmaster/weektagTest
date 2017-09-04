@@ -1,4 +1,4 @@
-package com.oyyx.weektag;
+package com.oyyx.weektag.Widget;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -8,6 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.RemoteViews;
+
+import com.oyyx.weektag.R;
+import com.oyyx.weektag.DateBase.Transactionn;
+import com.oyyx.weektag.Utils.CalendarUtils;
 
 import java.util.HashSet;
 import java.util.Iterator;
