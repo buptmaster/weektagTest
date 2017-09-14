@@ -18,11 +18,14 @@
         tools:layout_editor_absoluteX="8dp"/>
 
     <FrameLayout
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground"
         android:id="@+id/empty"
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
+            android:id="@+id/create_transaction"
             android:layout_marginTop="250dp"
             android:gravity="center"
             android:textSize="25sp"

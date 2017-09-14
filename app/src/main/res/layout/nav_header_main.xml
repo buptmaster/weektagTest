@@ -3,8 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
+    android:clickable="true"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/md_tag"
+    android:background="@drawable/backgroud_apple"
     android:gravity="bottom"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -13,17 +15,25 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        app:civ_fill_color="@color/blueberry"
+        android:id="@+id/user_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"/>
+
     <TextView
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:textSize="25sp"
+        android:textColor="@color/gray"
         android:text="未知用户"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
     <TextView
         android:id="@+id/email_address"
+        android:textColor="@color/gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="未知邮箱"/>

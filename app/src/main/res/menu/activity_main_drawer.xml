@@ -5,7 +5,19 @@
         <item
             android:id="@+id/nav_import"
             android:icon="@drawable/ic_action_import"
-            android:title="导入"/>
+            android:title="从日历导入日程"/>
+        <item
+            android:id="@+id/nav_robot"
+            android:icon="@drawable/ic_robot"
+            android:title="小机器人"/>
+        <item
+            android:id="@+id/nav_today_in_history"
+            android:icon="@drawable/ic_book"
+            android:title="历史上的今天"/>
+        <item
+            android:id="@+id/nav_change_theme"
+            android:icon="@drawable/ic_change_theme"
+            android:title="更换主题"/>
     </group>
 
     <item android:title="其它">

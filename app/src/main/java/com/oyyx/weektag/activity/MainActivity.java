@@ -9,13 +9,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 
 import android.os.Build;
 import android.os.Bundle;
 
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -41,6 +44,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 
+import com.bumptech.glide.Glide;
 import com.oyyx.weektag.R;
 import com.oyyx.weektag.adapter.HistoryAdapter;
 import com.oyyx.weektag.callback.DialogCallBack;
@@ -51,8 +55,12 @@ import com.oyyx.weektag.utils.CalendarUtils;
 import org.litepal.LitePal;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainActivity extends AppCompatActivity
@@ -61,8 +69,12 @@ public class MainActivity extends AppCompatActivity
     //打开本人的qq临时会话uri
     private final String qqUrl = "mqqwpa://im/chat?chat_type=wpa&uin=768471488&version=1";
 
-    private final static int SORT_DEFAULT = 0;
-    private final static int SORT_BY_TIME = 1;
+
+    private static final int SELECT_FROM_ALBUM = 0;
+    private static final int TAKE_PHOTOS = 1;
+    private static final int USER_DATA = 2;
+    private final static int SORT_DEFAULT = 3;
+    private final static int SORT_BY_TIME = 4;
 
     private static int sortFlag = SORT_DEFAULT;
 
@@ -72,9 +84,11 @@ public class MainActivity extends AppCompatActivity
 
     private TextView username;
     private TextView emailaddress;
+    private CircleImageView userImage;
 
     private List<Transactionn> transactionns;
 
+    private String uri;
 
     //存储用户名及其邮箱
     private SharedPreferences sp;
@@ -109,9 +123,11 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //侧边栏头部布局初始化
         View view = navigationView.inflateHeaderView(R.layout.nav_header_main);
         username = (TextView) view.findViewById(R.id.username);
         emailaddress = (TextView) view.findViewById(R.id.email_address);
+        userImage = (CircleImageView) view.findViewById(R.id.user_image);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -130,10 +146,39 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        view.setOnClickListener(new View.OnClickListener() {
+        username.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), 0);
+                startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), USER_DATA);
+            }
+        });
+
+        userImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CharSequence[] items = {"从相册中选择", "拍照"};
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("选择图片来源")
+                        .setItems(items, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                if (i == SELECT_FROM_ALBUM) {
+                                    //从相册选择图片
+                                    Intent intent = new Intent(Intent.ACTION_PICK);
+                                    intent.setType("image/*");
+                                    startActivityForResult(Intent.createChooser(intent, "选择图片"), SELECT_FROM_ALBUM);
+                                } else {
+                                    //拍摄照片
+                                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    String photoName = "IMG" + UUID.randomUUID().toString() + ".jpg";
+                                    //设置照片存储路径
+                                    Uri photoPath = Uri.fromFile(new File(MainActivity.this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), photoName));
+                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoPath);
+                                    uri = photoPath.toString();
+                                    startActivityForResult(intent, TAKE_PHOTOS);
+                                }
+                            }
+                        }).create().show();
             }
         });
 
@@ -226,6 +271,12 @@ public class MainActivity extends AppCompatActivity
             } else if (sortFlag == SORT_BY_TIME) {
                 UpdateUIByTime();
             }
+        } else if (id == R.id.nav_robot) {
+//TODO
+        } else if (id == R.id.nav_today_in_history) {
+//TODO
+        }else if(id==R.id.nav_change_theme){
+            //TODO
         } else if (id == R.id.nav_feedback) {
 
             if (isAppInstalled(this, "com.tencent.mobileqq")) {
@@ -251,11 +302,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            if (requestCode == 0) {
+            if (requestCode == USER_DATA) {
                 String userName = data.getStringExtra("username");
                 String emailAddress = data.getStringExtra("emailaddress");
-
-
                 if (userName == null || emailAddress == null) {
                     username.setText("未知用户");
                     emailaddress.setText("未知邮箱");
@@ -268,6 +317,26 @@ public class MainActivity extends AppCompatActivity
                     editor.apply();
                     Snackbar.make(getWindow().getDecorView(), "欢迎，" + userName, Snackbar.LENGTH_LONG).show();
                 }
+            } else if (requestCode == SELECT_FROM_ALBUM) {
+                Uri path = data.getData();
+                Glide.with(this)
+                        .load(path)
+                        .into(userImage);
+                uri = path.toString();
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("userimage", uri);
+                editor.apply();
+            } else if (requestCode == TAKE_PHOTOS) {
+                //相机的回传
+                if (uri != null) {
+                    Glide.with(this)
+                            .load(uri)
+                            .into(userImage);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString("userimage", uri);
+                    editor.apply();
+
+                }
             }
         }
     }
@@ -275,7 +344,10 @@ public class MainActivity extends AppCompatActivity
     private void setUserInfo(SharedPreferences sp) {
         username.setText(sp.getString("username", "未知用户"));
         emailaddress.setText(sp.getString("emailaddress", "未知邮箱"));
-
+        String path = sp.getString("userimage", null);
+        if (path!=null){
+            Glide.with(this).load(path).into(userImage);
+        }
     }
 
     private void UpdateUI() {
