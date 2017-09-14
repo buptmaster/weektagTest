@@ -23,6 +23,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import com.bumptech.glide.Glide;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.oyyx.weektag.R;
@@ -129,8 +130,10 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        Aesthetic.attach(this);
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setTheme(getApplication().getSharedPreferences("theme",MODE_PRIVATE).getInt("theme",R.style.myTheme));
         setContentView(R.layout.activity_transaction);
         LitePal.initialize(this);
 
@@ -244,6 +247,13 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
         til_title.setHint("标题");
         til_memo.setHint("备注");
         super.onResume();
+//        Aesthetic.resume(this);
+    }
+
+    @Override
+    protected void onPause() {
+//        Aesthetic.pause(this);
+        super.onPause();
     }
 
     @Override

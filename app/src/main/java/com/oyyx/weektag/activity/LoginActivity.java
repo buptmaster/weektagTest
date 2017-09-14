@@ -3,6 +3,7 @@ package com.oyyx.weektag.activity;
 
 import android.content.Intent;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.support.design.widget.TextInputLayout;
@@ -15,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+
 
 
 import com.oyyx.weektag.R;
@@ -36,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private Pattern mPattern = Pattern.compile(EMAIL_PATTERN);
 
+
     //用户名
     @BindView(R.id.username_til)
     TextInputLayout userName_til;
@@ -47,7 +50,9 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        Aesthetic.attach(this);
         super.onCreate(savedInstanceState);
+        setTheme(getApplication().getSharedPreferences("theme",MODE_PRIVATE).getInt("theme",R.style.myTheme));
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
@@ -62,7 +67,18 @@ public class LoginActivity extends AppCompatActivity {
 
         //设置空标题
         actionBar.setTitle("");
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        Aesthetic.resume(this);
+    }
+
+    @Override
+    protected void onPause() {
+//        Aesthetic.pause();
+        super.onPause();
     }
 
     @Override

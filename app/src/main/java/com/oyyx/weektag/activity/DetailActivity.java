@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import com.bumptech.glide.Glide;
 import com.oyyx.weektag.R;
 import com.oyyx.weektag.dateBase.TransactionLab;
@@ -79,7 +80,9 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        Aesthetic.attach(this);
         super.onCreate(savedInstanceState);
+        setTheme(getApplication().getSharedPreferences("theme",MODE_PRIVATE).getInt("theme",R.style.myTheme));
         setContentView(R.layout.activity_detail);
         //初始化数据库
         LitePal.initialize(this);
@@ -211,6 +214,18 @@ public class DetailActivity extends AppCompatActivity {
                 ((Vibrator)getSystemService(VIBRATOR_SERVICE)).vibrate(200);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        Aesthetic.resume(this);
+    }
+
+    @Override
+    protected void onPostResume() {
+//        Aesthetic.pause(this);
+        super.onPostResume();
     }
 
     @Override

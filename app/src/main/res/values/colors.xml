@@ -52,4 +52,14 @@
         <item>@color/magenta</item>
 
     </array>
+
+    <color name="primaryColorRed">#d60000</color>
+    <color name="primaryLightColorRed">#ff5131</color>
+    <color name="primaryDarkColorRed">#9c0000</color>
+    <color name="primaryColorPurple">#aa00ff</color>
+    <color name="primaryLightColorPurple">#e254ff</color>
+    <color name="primaryDarkColorPurple">#7200ca</color>
+    <color name="primaryColorGreen">#8bc34a</color>
+    <color name="primaryLightColorGreen">#bef67a</color>
+    <color name="primaryDarkColorGreen">#5a9216</color>
 </resources>

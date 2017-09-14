@@ -2,6 +2,7 @@ package com.oyyx.weektag.activity;
 
 
 import android.app.ActivityOptions;
+import android.app.AlarmManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -42,6 +43,7 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
 
 
 import com.bumptech.glide.Glide;
@@ -93,14 +95,25 @@ public class MainActivity extends AppCompatActivity
     //存储用户名及其邮箱
     private SharedPreferences sp;
 
+    //存储主题
+    private SharedPreferences themeSp;
+
+    private int themeCount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        Aesthetic.attach(this);
         super.onCreate(savedInstanceState);
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         }
+
+        //更新主题
+        themeSp = getApplicationContext().getSharedPreferences("theme", MODE_PRIVATE);
+        themeCount = themeSp.getInt("themecount", 0);
+        setTheme(themeSp.getInt("theme",R.style.myTheme));
 
 
         setContentView(R.layout.activity_main);
@@ -202,6 +215,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+//        Aesthetic.resume(this);
         if (sortFlag == SORT_DEFAULT) {
             UpdateUI();
         } else if (sortFlag == SORT_BY_TIME) {
@@ -209,6 +223,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onPause() {
+//        Aesthetic.resume(this);
+        super.onPause();
+    }
 
     @Override
     public void onBackPressed() {
@@ -225,6 +244,12 @@ public class MainActivity extends AppCompatActivity
 
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
     }
 
     @Override
@@ -276,7 +301,37 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_today_in_history) {
 //TODO
         }else if(id==R.id.nav_change_theme){
-            //TODO
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("更换主题")
+                    .setIcon(R.drawable.ic_change_theme)
+                    .setSingleChoiceItems(new String[]{"默认主题", "原谅绿", "可爱紫", "魅力红"}, themeCount, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            int themeId=0;
+                            switch (which) {
+                                case 0:
+                                    themeId = R.style.myTheme;
+                                    themeCount = 0;
+                                    break;
+                                case 1:
+                                    themeId = R.style.myGreenTheme;
+                                    themeCount =1;
+                                    break;
+                                case 2:
+                                    themeId = R.style.myPurpleTheme;
+                                    themeCount = 2;
+                                    break;
+                                case 3:
+                                    themeId = R.style.myRedTheme;
+                                    themeCount = 3;
+                                    break;
+                            }
+                            dialog.cancel();
+                            notifyThemeChanged(themeId,themeCount);
+
+                        }
+                    }).setNegativeButton("取消",null)
+                    .show();
         } else if (id == R.id.nav_feedback) {
 
             if (isAppInstalled(this, "com.tencent.mobileqq")) {
@@ -416,6 +471,16 @@ public class MainActivity extends AppCompatActivity
         } else if (sortFlag == SORT_BY_TIME) {
             UpdateUIByTime();
         }
+    }
+
+    private void notifyThemeChanged(int themeId,int themeCount){
+        themeSp = getApplicationContext().getSharedPreferences("theme", MODE_PRIVATE);
+        SharedPreferences.Editor editor = themeSp.edit();
+        editor.putInt("theme", themeId);
+        editor.putInt("themecount", themeCount);
+        editor.apply();
+        startActivity(new Intent(MainActivity.this,MainActivity.class));
+        finish();
     }
 }
 

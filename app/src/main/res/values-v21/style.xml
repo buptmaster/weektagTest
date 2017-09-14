@@ -4,10 +4,29 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-
-
     </style>
 
+    <style name="myRedTheme" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/primaryColorRed</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorRed</item>
+        <item name="colorAccent">@color/primaryLightColorRed</item>
+    </style>
+    <style name="myGreenTheme" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/primaryColorGreen</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorGreen</item>
+        <item name="colorAccent">@color/primaryLightColorGreen</item>
+    </style>
+    <style name="myPurpleTheme" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/primaryColorPurple</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/primaryLightColorPurple</item>
+    </style>
     <style name="MyCardView" parent="CardView.Light">
         <item name="android:clickable">true</item>
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
