@@ -1,4 +1,4 @@
-package com.oyyx.weektag;
+package com.oyyx.weektag.activity;
 
 
 import android.content.Intent;
@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+
+import com.oyyx.weektag.R;
 
 import java.util.regex.Pattern;
 

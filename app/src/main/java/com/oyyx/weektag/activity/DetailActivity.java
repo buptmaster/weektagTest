@@ -1,4 +1,4 @@
-package com.oyyx.weektag;
+package com.oyyx.weektag.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,10 +24,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.oyyx.weektag.DateBase.TransactionLab;
-import com.oyyx.weektag.DateBase.Transactionn;
-import com.oyyx.weektag.Utils.CalendarUtils;
-import com.oyyx.weektag.View.WaveView;
+import com.oyyx.weektag.R;
+import com.oyyx.weektag.dateBase.TransactionLab;
+import com.oyyx.weektag.dateBase.Transactionn;
+import com.oyyx.weektag.utils.CalendarUtils;
+import com.oyyx.weektag.view.WaveView;
 
 import org.litepal.LitePal;
 
@@ -111,7 +112,6 @@ public class DetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_layout);
         detail_iv = (ImageView) findViewById(R.id.detail_iv);
-        TextView detail_tv = (TextView) findViewById(R.id.detail_memo);
         mNestedScrollView = (NestedScrollView) findViewById(R.id.sv);
         memo_cv = (CardView)findViewById(R.id.memo_cv);
         mWaveView = (WaveView) findViewById(R.id.wave);
@@ -189,11 +189,11 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         if (memo != null) {
-            detail_tv.setText(memo);
+            detail_memo.setText(memo);
         } else {
             int[] str = {R.string.good_thing, R.string.bad_thing};
             Random r = new Random();
-            detail_tv.setText(str[r.nextInt(1)]);
+            detail_memo.setText(str[r.nextInt(1)]);
         }
 
         if (uri != null) {

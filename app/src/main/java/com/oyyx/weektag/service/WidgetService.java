@@ -1,4 +1,4 @@
-package com.oyyx.weektag.Service;
+package com.oyyx.weektag.service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -11,10 +11,10 @@ import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
 
-import com.oyyx.weektag.MainActivity;
+import com.oyyx.weektag.activity.MainActivity;
 import com.oyyx.weektag.R;
-import com.oyyx.weektag.DateBase.TransactionLab;
-import com.oyyx.weektag.DateBase.Transactionn;
+import com.oyyx.weektag.dateBase.TransactionLab;
+import com.oyyx.weektag.dateBase.Transactionn;
 
 import org.litepal.LitePal;
 
@@ -30,6 +30,7 @@ public class WidgetService extends Service {
     private static int position = 0;
 
     private BroadcastReceiver mBroadcastReceiver;
+
 
     public WidgetService() {
     }

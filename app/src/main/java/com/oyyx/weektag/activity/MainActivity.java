@@ -1,6 +1,7 @@
-package com.oyyx.weektag;
+package com.oyyx.weektag.activity;
 
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,15 +11,21 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 
+import android.os.Build;
 import android.os.Bundle;
 
-import android.support.annotation.NonNull;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.transition.AutoTransition;
+import android.transition.ChangeBounds;
+import android.transition.Explode;
+import android.transition.Slide;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -29,14 +36,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 
-import com.oyyx.weektag.Adapter.HistoryAdapter;
-import com.oyyx.weektag.DateBase.TransactionLab;
-import com.oyyx.weektag.DateBase.Transactionn;
-import com.oyyx.weektag.Utils.CalendarUtils;
+import com.oyyx.weektag.R;
+import com.oyyx.weektag.adapter.HistoryAdapter;
+import com.oyyx.weektag.callback.DialogCallBack;
+import com.oyyx.weektag.dateBase.TransactionLab;
+import com.oyyx.weektag.dateBase.Transactionn;
+import com.oyyx.weektag.utils.CalendarUtils;
 
 import org.litepal.LitePal;
 
@@ -46,7 +56,7 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, DialogCallBack {
 
     //打开本人的qq临时会话uri
     private final String qqUrl = "mqqwpa://im/chat?chat_type=wpa&uin=768471488&version=1";
@@ -54,7 +64,7 @@ public class MainActivity extends AppCompatActivity
     private final static int SORT_DEFAULT = 0;
     private final static int SORT_BY_TIME = 1;
 
-    private int sortFlag = SORT_DEFAULT;
+    private static int sortFlag = SORT_DEFAULT;
 
     private RecyclerView mRecyclerView;
     private HistoryAdapter mHistoryAdapter;
@@ -72,6 +82,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        }
+
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -100,7 +117,16 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,TransactionActivity.class));
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                    getWindow().setExitTransition(new Explode());
+                    startActivity(new Intent(MainActivity.this, TransactionActivity.class),
+                            ActivityOptions
+                                    .makeSceneTransitionAnimation(MainActivity.this).toBundle());
+                } else {
+                    startActivity(new Intent(MainActivity.this, TransactionActivity.class));
+                }
             }
         });
 
@@ -117,26 +143,27 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView.setHasFixedSize(true);
 
 
-        if(sortFlag == SORT_DEFAULT) {
+        if (sortFlag == SORT_DEFAULT) {
             UpdateUI();
-        }
-        else if(sortFlag == SORT_BY_TIME) {
+        } else if (sortFlag == SORT_BY_TIME) {
             UpdateUIByTime();
         }
         sp = getApplicationContext().getSharedPreferences("userInfo", MODE_PRIVATE);
         setUserInfo(sp);
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(sortFlag == SORT_DEFAULT) {
+        if (sortFlag == SORT_DEFAULT) {
             UpdateUI();
-        }
-        else if(sortFlag == SORT_BY_TIME) {
+        } else if (sortFlag == SORT_BY_TIME) {
             UpdateUIByTime();
         }
     }
+
 
     @Override
     public void onBackPressed() {
@@ -167,7 +194,7 @@ public class MainActivity extends AppCompatActivity
             UpdateUI();
             sortFlag = SORT_DEFAULT;
             return true;
-        }else if(id == R.id.action_delete_all_transactions){
+        } else if (id == R.id.action_delete_all_transactions) {
             new AlertDialog.Builder(this)
                     .setTitle("确认")
                     .setMessage("即将删除所有事件")
@@ -178,7 +205,7 @@ public class MainActivity extends AppCompatActivity
                             UpdateUI();
                         }
                     })
-                    .setNegativeButton("取消",null)
+                    .setNegativeButton("取消", null)
                     .show();
             return true;
         }
@@ -193,14 +220,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_import) {
-           transactionns = CalendarUtils.getCalendarEvent(this,transactionns);
-            if(sortFlag == SORT_DEFAULT) {
+            transactionns = CalendarUtils.getCalendarEvent(this, transactionns);
+            if (sortFlag == SORT_DEFAULT) {
                 UpdateUI();
-            }
-            else if(sortFlag == SORT_BY_TIME) {
+            } else if (sortFlag == SORT_BY_TIME) {
                 UpdateUIByTime();
             }
-        }  else if (id == R.id.nav_feedback) {
+        } else if (id == R.id.nav_feedback) {
 
             if (isAppInstalled(this, "com.tencent.mobileqq")) {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(qqUrl)));
@@ -256,16 +282,16 @@ public class MainActivity extends AppCompatActivity
         TransactionLab transactionLab = TransactionLab.get();
         transactionns = transactionLab.getTransactionnsByDefault();
 
-        if (transactionns.size() == 0){
+        if (transactionns.size() == 0) {
             emptyView.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
-        }else {
+        } else {
             mRecyclerView.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
         }
 
         if (mHistoryAdapter == null) {
-            mHistoryAdapter = new HistoryAdapter(transactionns);
+            mHistoryAdapter = new HistoryAdapter(transactionns, this);
             mRecyclerView.setAdapter(mHistoryAdapter);
         } else {
             mHistoryAdapter.setTransactionns(transactionns);
@@ -279,17 +305,17 @@ public class MainActivity extends AppCompatActivity
         TransactionLab transactionLab = TransactionLab.get();
         transactionns = transactionLab.getTransactionnsByTime();
 
-        if (transactionns.size() == 0){
+        if (transactionns.size() == 0) {
             emptyView.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
-        }else {
+        } else {
             mRecyclerView.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
         }
 
 
         if (mHistoryAdapter == null) {
-            mHistoryAdapter = new HistoryAdapter(transactionns);
+            mHistoryAdapter = new HistoryAdapter(transactionns, this);
             mRecyclerView.setAdapter(mHistoryAdapter);
         } else {
             mHistoryAdapter.setTransactionns(transactionns);
@@ -311,5 +337,14 @@ public class MainActivity extends AppCompatActivity
         return pName.contains(packageName);
     }
 
+    @Override
+    public void updateUIFromDeleteDialog() {
+        if (sortFlag == SORT_DEFAULT) {
+            UpdateUI();
+        } else if (sortFlag == SORT_BY_TIME) {
+            UpdateUIByTime();
+        }
+    }
 }
+
 

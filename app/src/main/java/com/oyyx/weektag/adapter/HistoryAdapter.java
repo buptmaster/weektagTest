@@ -1,8 +1,11 @@
-package com.oyyx.weektag.Adapter;
+package com.oyyx.weektag.adapter;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,10 +15,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.oyyx.weektag.DateBase.Transactionn;
-import com.oyyx.weektag.DetailActivity;
+import com.oyyx.weektag.activity.MainActivity;
+import com.oyyx.weektag.callback.DialogCallBack;
+import com.oyyx.weektag.dateBase.TransactionLab;
+import com.oyyx.weektag.dateBase.Transactionn;
+import com.oyyx.weektag.activity.DetailActivity;
 import com.oyyx.weektag.R;
-import com.oyyx.weektag.Utils.CalendarUtils;
+import com.oyyx.weektag.utils.CalendarUtils;
 
 import java.util.List;
 import java.util.Random;
@@ -27,10 +33,14 @@ import java.util.Random;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.TransactionHolder> {
 
-    private List<Transactionn> mTransactionns;
 
-    public HistoryAdapter(List<Transactionn> mTransactionns){
+
+    private List<Transactionn> mTransactionns;
+    private DialogCallBack mDialogCallBack;
+
+    public HistoryAdapter(List<Transactionn> mTransactionns, DialogCallBack dialogCallBack){
         this.mTransactionns = mTransactionns;
+        mDialogCallBack = dialogCallBack;
     }
 
 
@@ -41,10 +51,28 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
         transactionHolder.item_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Transactionn transactionn = mTransactionns.get(transactionHolder.getAdapterPosition());
                 Intent intent = new Intent(parent.getContext(), DetailActivity.class);
                 intent.putExtra("position",transactionHolder.getAdapterPosition());
                 parent.getContext().startActivity(intent);
+            }
+        });
+
+        transactionHolder.item_layout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                new AlertDialog.Builder(parent.getContext())
+                        .setTitle("确认")
+                        .setMessage("删除该事件")
+                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                TransactionLab.get().deleteTransaction(mTransactionns.get(transactionHolder.getAdapterPosition()).getUUID());
+                                mDialogCallBack.updateUIFromDeleteDialog();
+                            }
+                        })
+                        .setNegativeButton("取消",null)
+                        .show();
+                return true;
             }
         });
         return transactionHolder;

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.oyyx.weektag.TransactionActivity">
+    tools:context="com.oyyx.weektag.activity.TransactionActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -30,8 +30,7 @@
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="标题"/>
+            android:layout_height="match_parent"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -178,7 +177,6 @@
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="备注（可不填）"
             android:minLines="2"/>
 
     </android.support.design.widget.TextInputLayout>

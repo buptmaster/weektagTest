@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.oyyx.weektag.DetailActivity">
+    tools:context="com.oyyx.weektag.activity.DetailActivity">
 
     <android.support.design.widget.AppBarLayout
         android:fitsSystemWindows="true"
@@ -156,7 +156,7 @@
 
             </android.support.v7.widget.CardView>
 
-            <com.oyyx.weektag.View.WaveView
+            <com.oyyx.weektag.view.WaveView
                 android:id="@+id/wave"
                 android:layout_gravity="bottom"
                 android:layout_width="match_parent"

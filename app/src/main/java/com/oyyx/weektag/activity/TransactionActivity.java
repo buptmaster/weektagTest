@@ -1,4 +1,4 @@
-package com.oyyx.weektag;
+package com.oyyx.weektag.activity;
 
 
 import android.content.DialogInterface;
@@ -15,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,9 +25,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
-import com.oyyx.weektag.DateBase.TransactionLab;
-import com.oyyx.weektag.DateBase.Transactionn;
-import com.oyyx.weektag.Utils.CalendarUtils;
+import com.oyyx.weektag.R;
+import com.oyyx.weektag.dateBase.TransactionLab;
+import com.oyyx.weektag.dateBase.Transactionn;
+import com.oyyx.weektag.utils.CalendarUtils;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
@@ -233,6 +235,23 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
         });
 
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        //防止动画问题留存
+        til_title.setHint("标题");
+        til_memo.setHint("备注");
+        super.onResume();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //防止动画问题留存
+        til_title.setHint("");
+        til_memo.setHint("");
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override

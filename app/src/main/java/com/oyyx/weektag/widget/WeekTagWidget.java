@@ -1,4 +1,4 @@
-package com.oyyx.weektag.Widget;
+package com.oyyx.weektag.widget;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -7,11 +7,13 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
+import com.oyyx.weektag.activity.MainActivity;
 import com.oyyx.weektag.R;
-import com.oyyx.weektag.DateBase.Transactionn;
-import com.oyyx.weektag.Utils.CalendarUtils;
+import com.oyyx.weektag.dateBase.Transactionn;
+import com.oyyx.weektag.utils.CalendarUtils;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -46,18 +48,29 @@ public class WeekTagWidget extends AppWidgetProvider {
 
         Iterator iterator = set.iterator();
 
+
+
         while (iterator.hasNext()) {
 
             appWidgetId = ((Integer) iterator.next()).intValue();
 
             //构建remoteview
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.week_tag_widget);
-            views.setTextViewText(R.id.widget_title, mTransaction.getTitle());
-            long times[] = CalendarUtils.getTime(mTransaction.getTime());
-            days = times[0];
-            views.setTextViewText(R.id.widget_time, days + "");
-            views.setImageViewResource(R.id.widget_bg,R.drawable.widget_linear);
-            views.setOnClickPendingIntent(R.id.widget_click,getPendingIntent(context));
+            if(mTransaction!=null) {
+
+                views.setTextViewText(R.id.widget_title, mTransaction.getTitle());
+                long times[] = CalendarUtils.getTime(mTransaction.getTime());
+                days = times[0];
+                views.setTextViewText(R.id.widget_time, days + "");
+                views.setImageViewResource(R.id.widget_bg, R.drawable.widget_linear);
+                views.setOnClickPendingIntent(R.id.widget_click, getPendingIntent(context));
+            }else {
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
+
+                views.setViewVisibility(R.id.has_transaction_widget, View.GONE);
+                views.setViewVisibility(R.id.no_transaction_widget, View.VISIBLE);
+                views.setOnClickPendingIntent(R.id.add_transaction_widget, pendingIntent);
+            }
             // 更新widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }

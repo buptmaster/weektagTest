@@ -1,4 +1,4 @@
-package com.oyyx.weektag.View;
+package com.oyyx.weektag.view;
 
 import android.animation.ValueAnimator;
 import android.content.Context;

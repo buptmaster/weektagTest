@@ -1,4 +1,4 @@
-package com.oyyx.weektag.Utils;
+package com.oyyx.weektag.utils;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.provider.CalendarContract;
 import android.util.Log;
 
-import com.oyyx.weektag.DateBase.Transactionn;
+import com.oyyx.weektag.dateBase.Transactionn;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -68,8 +68,6 @@ public class CalendarUtils {
     //将一个特定日期转换成毫秒数
     public static long timeToDate(int year, int month, int day, int hour, int min) {
 
-        Log.e("erwer", month+"");
-
         String monthstr = month + "";
         String daystr = day + "";
         String hourstr = hour + "";
@@ -88,11 +86,9 @@ public class CalendarUtils {
         Date date = null;
         try {
             date = format.parse(str);
-            Log.e("--------->date", date.getTime()+"");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Log.d("e", "timeToDate: "+date.toString());
         return date.getTime();
     }
 

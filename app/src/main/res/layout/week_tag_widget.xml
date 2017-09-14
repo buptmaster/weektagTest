@@ -3,70 +3,83 @@
              android:layout_height="match_parent"
              android:padding="@dimen/widget_margin">
 
-    <ImageView
-        android:id="@+id/widget_bg"
-        android:scaleType="centerCrop"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <LinearLayout
-        android:gravity="center"
-        android:orientation="vertical"
-        android:id="@+id/widget_click"
+    <FrameLayout
+        android:visibility="visible"
+        android:id="@+id/has_transaction_widget"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <TextView
-            android:text="直至"
-            android:textColor="@color/transparent_black"
-            android:textSize="25sp"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:textSize="35sp"
-            android:textColor="@color/transparent_black"
-            android:gravity="center"
-            android:id="@+id/widget_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:text="还有"
-            android:textSize="25sp"
-            android:gravity="center"
-            android:textColor="@color/transparent_black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:textSize="45sp"
-            android:gravity="center"
-            android:id="@+id/widget_time"
-            android:textStyle="bold"
-            android:layout_width="match_parent"
-            android:textColor="@color/transparent_black"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:text="天"
-            android:textSize="25sp"
-            android:gravity="center"
-            android:textColor="@color/transparent_black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/widget_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"/>
+
+        <LinearLayout
+            android:id="@+id/widget_click"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="直至"
+                android:textColor="@color/transparent_black"
+                android:textSize="25sp"/>
+
+            <TextView
+                android:id="@+id/widget_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/transparent_black"
+                android:textSize="35sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="还有"
+                android:textColor="@color/transparent_black"
+                android:textSize="25sp"/>
+
+            <TextView
+                android:id="@+id/widget_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/transparent_black"
+                android:textSize="45sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="天"
+                android:textColor="@color/transparent_black"
+                android:textSize="25sp"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
 
     <FrameLayout
         android:id="@+id/no_transaction_widget"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <TextView
-            android:textSize="25sp"
-            android:text="点击添加事件！"
-            android:gravity="center"
             android:id="@+id/add_transaction_widget"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="点击添加事件！"
+            android:textSize="25sp"/>
 
     </FrameLayout>
 
