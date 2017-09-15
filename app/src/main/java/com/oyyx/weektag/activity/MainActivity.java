@@ -11,6 +11,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 
 import android.os.Build;
@@ -43,7 +45,7 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
@@ -215,7 +217,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-//        Aesthetic.resume(this);
         if (sortFlag == SORT_DEFAULT) {
             UpdateUI();
         } else if (sortFlag == SORT_BY_TIME) {
@@ -223,11 +224,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    protected void onPause() {
-//        Aesthetic.resume(this);
-        super.onPause();
-    }
 
     @Override
     public void onBackPressed() {
@@ -297,7 +293,11 @@ public class MainActivity extends AppCompatActivity
                 UpdateUIByTime();
             }
         } else if (id == R.id.nav_robot) {
-//TODO
+            if (isNetworkConnected(this)) {
+                startActivity(new Intent(MainActivity.this, RobotActivity.class));
+            }else {
+                Toast.makeText(this, "网络不可用", Toast.LENGTH_LONG).show();
+            }
         } else if (id == R.id.nav_today_in_history) {
 //TODO
         }else if(id==R.id.nav_change_theme){
@@ -482,6 +482,20 @@ public class MainActivity extends AppCompatActivity
         startActivity(new Intent(MainActivity.this,MainActivity.class));
         finish();
     }
+
+    public static boolean isNetworkConnected(Context context) {
+        if (context != null) {
+            // 获取手机所有连接管理对象(包括对wi-fi,net等连接的管理)
+            ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            // 获取NetworkInfo对象
+            NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+            //判断NetworkInfo对象是否为空
+            if (networkInfo != null)
+                return networkInfo.isAvailable();
+        }
+        return false;
+    }
+
 }
 
 

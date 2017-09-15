@@ -15,6 +15,7 @@ import com.oyyx.weektag.model.ItemModel;
 
 import java.util.ArrayList;
 
+
 /**
  * Created by WangChang on 2016/4/28.
  */
@@ -33,7 +34,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.BaseViewHolder
     public void addAll(ArrayList<ItemModel> list) {
         if (dataList != null && list != null) {
             dataList.addAll(list);
-            notifyItemRangeChanged(dataList.size(),list.size());
+            notifyDataSetChanged();
         }
 
     }
@@ -89,7 +90,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.BaseViewHolder
         void setData(Object object) {
             super.setData(object);
             ChatModel model = (ChatModel) object;
-            Glide.with(itemView.getContext()).load(model.getIcon()).into(ic_user);
+            Glide.with(itemView.getContext()).load(R.mipmap.ic_launcher).into(ic_user);
             tv.setText(model.getContent());
         }
     }

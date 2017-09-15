@@ -216,17 +216,6 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        Aesthetic.resume(this);
-    }
-
-    @Override
-    protected void onPostResume() {
-//        Aesthetic.pause(this);
-        super.onPostResume();
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
