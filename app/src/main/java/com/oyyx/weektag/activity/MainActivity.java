@@ -52,6 +52,7 @@ import com.bumptech.glide.Glide;
 import com.oyyx.weektag.R;
 import com.oyyx.weektag.adapter.HistoryAdapter;
 import com.oyyx.weektag.callback.DialogCallBack;
+import com.oyyx.weektag.dateBase.HistoryToday;
 import com.oyyx.weektag.dateBase.TransactionLab;
 import com.oyyx.weektag.dateBase.Transactionn;
 import com.oyyx.weektag.utils.CalendarUtils;
@@ -299,7 +300,7 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(this, "网络不可用", Toast.LENGTH_LONG).show();
             }
         } else if (id == R.id.nav_today_in_history) {
-//TODO
+            startActivity(new Intent(MainActivity.this, HistoryActivity.class));
         }else if(id==R.id.nav_change_theme){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("更换主题")

@@ -4,5 +4,6 @@
     <version value="1"/>
     <list>
         <mapping class="com.oyyx.weektag.dateBase.Transactionn"/>
+        <mapping class="com.oyyx.weektag.dateBase.ListBean"/>
     </list>
 </litepal>

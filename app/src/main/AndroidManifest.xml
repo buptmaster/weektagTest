@@ -66,10 +66,13 @@
         </receiver>
 
         <activity
-            android:theme="@style/AppTheme.NoActionBar"
             android:name=".activity.RobotActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize">
-
+        </activity>
+        <activity
+            android:theme="@style/AppTheme.NoActionBar"
+            android:name=".activity.HistoryActivity">
         </activity>
     </application>
 

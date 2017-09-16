@@ -72,12 +72,10 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        Aesthetic.resume(this);
     }
 
     @Override
     protected void onPause() {
-//        Aesthetic.pause();
         super.onPause();
     }
 
