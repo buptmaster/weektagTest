@@ -62,7 +62,7 @@ public class WeekTagWidget extends AppWidgetProvider {
                 long times[] = CalendarUtils.getTime(mTransaction.getTime());
                 days = times[0];
                 views.setTextViewText(R.id.widget_time, days + "");
-                views.setImageViewResource(R.id.widget_bg, R.drawable.widget_linear);
+                views.setImageViewResource(R.id.widget_bg, R.drawable.backgroud_apple);
                 views.setOnClickPendingIntent(R.id.widget_click, getPendingIntent(context));
             }else {
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);

@@ -29,7 +29,6 @@ import com.oyyx.weektag.model.ItemModel;
 import com.oyyx.weektag.net.RobotApi;
 
 
-
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -57,16 +56,24 @@ public class RobotActivity extends AppCompatActivity {
     private ArrayList<ItemModel> data;
     private volatile ArrayList<ItemModel> temp;
 
+    private SharedPreferences themeSp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        themeSp = getApplicationContext().getSharedPreferences("theme", MODE_PRIVATE);
+
+        setTheme(themeSp.getInt("theme", R.style.myTheme));
+
         setContentView(R.layout.activity_robot_acitivity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("小机器人");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
+
 
         actionBar.setDisplayHomeAsUpEnabled(true);
         sp = getApplicationContext().getSharedPreferences("userInfo", MODE_PRIVATE);
@@ -79,25 +86,22 @@ public class RobotActivity extends AppCompatActivity {
         robotApi = retrofit.create(RobotApi.class);
 
 
-
         recyclerView = (RecyclerView) findViewById(R.id.recylerView);
         et = (EditText) findViewById(R.id.et);
         tvSend = (TextView) findViewById(R.id.tvSend);
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager= new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false) ;
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         linearLayoutManager.setStackFromEnd(true);
 
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter = new ChatAdapter());
-        if (data==null) {
+        if (data == null) {
             data = new ArrayList<>();
         }
         adapter.replaceAll(data);
         initData();
     }
-
-
 
 
     private void initData() {
@@ -109,8 +113,8 @@ public class RobotActivity extends AppCompatActivity {
                 temp = new ArrayList<>();
                 data.addAll(temp);
                 ChatModel model = new ChatModel();
-                String path = sp.getString("userimage",null);
-                if(path!=null) {
+                String path = sp.getString("userimage", null);
+                if (path != null) {
                     model.setIcon(path);
                 }
                 model.setContent(content);
@@ -136,7 +140,7 @@ public class RobotActivity extends AppCompatActivity {
                                 temp.add(new ItemModel(ItemModel.CHAT_A, robotModel));
                                 adapter.addAll(temp);
                                 data.addAll(temp);
-                                recyclerView.smoothScrollToPosition(adapter.getItemCount()-1);
+                                recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
                                 recyclerView.invalidate();
                             }
                         });
@@ -153,7 +157,7 @@ public class RobotActivity extends AppCompatActivity {
                                 temp.add(new ItemModel(ItemModel.CHAT_A, robotModel));
                                 adapter.addAll(temp);
                                 data.addAll(temp);
-                                recyclerView.smoothScrollToPosition(adapter.getItemCount()-1);
+                                recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
                                 recyclerView.invalidate();
                             }
                         });
@@ -167,7 +171,7 @@ public class RobotActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        outState.putSerializable("data",data);
+        outState.putSerializable("data", data);
         super.onSaveInstanceState(outState, outPersistentState);
     }
 
@@ -180,7 +184,7 @@ public class RobotActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 break;

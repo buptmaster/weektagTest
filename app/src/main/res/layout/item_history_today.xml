@@ -3,40 +3,41 @@
                                     xmlns:app="http://schemas.android.com/apk/res-auto"
                                     android:id="@+id/item_history_today"
                                     style="@style/MyCardView"
-                                    app:cardElevation="8dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="6dp"
                                     android:background="@color/gray"
                                     app:cardCornerRadius="8dp"
-                                    android:layout_width="match_parent"
-                                    android:layout_margin="6dp"
-                                    android:layout_height="wrap_content">
+                                    app:cardElevation="8dp">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <ImageView
-            android:scaleType="centerCrop"
             android:id="@+id/item_history_image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-/>
-        <TextView
-            android:gravity="center"
-            android:padding="6dp"
-            android:id="@+id/item_history_text_date"
-            android:layout_weight="1.1"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"/>
+            android:scaleType="centerCrop"
+            />
 
         <TextView
+            android:id="@+id/item_history_text_date"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.1"
             android:gravity="center"
+            android:padding="6dp"
+            android:textStyle="bold"/>
+
+        <TextView
             android:id="@+id/item_history_text"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:gravity="center"
             android:padding="6dp"/>
-
 
 
     </LinearLayout>

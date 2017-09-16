@@ -65,6 +65,7 @@ public class HistoryTodayAdapter extends RecyclerView.Adapter<HistoryTodayAdapte
 
         public void bindHistoryToday(ListBean listBean, Context context ) {
             if(listBean.getImg()!=null){
+                mImageView.setVisibility(View.VISIBLE);
                 Glide.with(context).load(listBean.getImg()).into(mImageView);
             }else {
                 mImageView.setVisibility(View.GONE);

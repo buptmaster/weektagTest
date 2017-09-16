@@ -47,6 +47,7 @@ public class HistoryActivity extends AppCompatActivity {
     private Retrofit mRetrofit;
 
     private SharedPreferences sp;
+    private SharedPreferences themeSp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         LitePal.initialize(this);
@@ -54,6 +55,8 @@ public class HistoryActivity extends AppCompatActivity {
 
         mListBeen = (ArrayList<ListBean>) DataSupport.findAll(ListBean.class);
 
+        themeSp = getApplicationContext().getSharedPreferences("theme", MODE_PRIVATE);
+        setTheme(themeSp.getInt("theme", R.style.myTheme));
         sp = getApplicationContext().getSharedPreferences("token", MODE_PRIVATE);
 
         mRetrofit = new Retrofit.Builder()
@@ -116,7 +119,13 @@ public class HistoryActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<HistoryToday> call, Throwable t) {
-
+                    Toast.makeText(HistoryActivity.this,"无法连接网络",Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            finish();
+                        }
+                    });
                 }
             });
         }
