@@ -37,6 +37,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * 小机器人的功能
+ */
 public class RobotActivity extends AppCompatActivity {
 
     private static final String KEY = "57009182cbaa480eb19bbca87f35124a";

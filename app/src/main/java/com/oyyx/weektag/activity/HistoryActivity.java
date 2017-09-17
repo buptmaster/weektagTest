@@ -32,6 +32,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * 历史上的今天
+ */
 public class HistoryActivity extends AppCompatActivity {
 
     private static final String SECRET_CODE = "13ab6c3c3d3a43189ec8f83c04ad9928";

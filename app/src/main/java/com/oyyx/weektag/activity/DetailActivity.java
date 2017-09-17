@@ -1,5 +1,6 @@
 package com.oyyx.weektag.activity;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -35,6 +36,7 @@ import org.litepal.LitePal;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
@@ -77,7 +79,10 @@ public class DetailActivity extends AppCompatActivity {
 
     private TextView detail_memo;
 
+    private TextView detail_date;
 
+
+    @SuppressLint("SimpleDateFormat")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 //        Aesthetic.attach(this);
@@ -119,6 +124,7 @@ public class DetailActivity extends AppCompatActivity {
         memo_cv = (CardView)findViewById(R.id.memo_cv);
         mWaveView = (WaveView) findViewById(R.id.wave);
         detail_memo = (TextView) findViewById(R.id.detail_memo);
+        detail_date = (TextView) findViewById(R.id.detail_date);
 
         mNestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -199,9 +205,13 @@ public class DetailActivity extends AppCompatActivity {
             detail_memo.setText(str[r.nextInt(1)]);
         }
 
+
+
         if (uri != null) {
             Glide.with(this).load(uri).into(detail_iv);
         }
+
+        detail_date.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(transactionn.getTime())));
 
         exportToCalendar.setBackgroundTintList(ColorStateList.valueOf(color));
 
