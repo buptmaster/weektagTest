@@ -23,6 +23,8 @@ import org.litepal.LitePal;
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -94,14 +96,13 @@ public class HistoryActivity extends AppCompatActivity {
         }
 
 
-        if(sp.getString("token",null)==null) {
+        if(sp.getString("token",null)==null||!sp.getString("token","date").equals(Calendar.DAY_OF_MONTH+" "+Calendar.MONTH)) {
 
             call.enqueue(new Callback<HistoryToday>() {
                 @Override
                 public void onResponse(Call<HistoryToday> call, Response<HistoryToday> response) {
                     //noinspection ConstantConditions
                     mListBeen = (ArrayList<ListBean>) response.body().getShowapi_res_body().getList();
-                    Log.e("wrwerwr", mListBeen+"");
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -111,7 +112,7 @@ public class HistoryActivity extends AppCompatActivity {
                                 listBean.save();
                             }
                             SharedPreferences.Editor editor = sp.edit();
-                            editor.putString("token","token");
+                            editor.putString("token",Calendar.DAY_OF_MONTH+" "+Calendar.MONTH);
                             editor.apply();
                             mRecyclerView.removeAllViews();
 
