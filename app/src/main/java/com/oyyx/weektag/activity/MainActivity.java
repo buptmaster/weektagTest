@@ -1,8 +1,10 @@
 package com.oyyx.weektag.activity;
 
 
+import android.Manifest;
 import android.app.ActivityOptions;
 import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,8 +24,11 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -105,7 +110,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        Aesthetic.attach(this);
         super.onCreate(savedInstanceState);
 
 
@@ -287,12 +291,17 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_import) {
-            transactionns = CalendarUtils.getCalendarEvent(this, transactionns);
-            if (sortFlag == SORT_DEFAULT) {
-                UpdateUI();
-            } else if (sortFlag == SORT_BY_TIME) {
-                UpdateUIByTime();
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) !=PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_CALENDAR,Manifest.permission.WRITE_CALENDAR},0);
+            }else {
+                transactionns = CalendarUtils.getCalendarEvent(this, transactionns);
+                if (sortFlag == SORT_DEFAULT) {
+                    UpdateUI();
+                } else if (sortFlag == SORT_BY_TIME) {
+                    UpdateUIByTime();
+                }
             }
+
         } else if (id == R.id.nav_robot) {
             if (isNetworkConnected(this)) {
                 startActivity(new Intent(MainActivity.this, RobotActivity.class));
@@ -497,6 +506,22 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 0:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    transactionns = CalendarUtils.getCalendarEvent(this, transactionns);
+                    if (sortFlag == SORT_DEFAULT) {
+                        UpdateUI();
+                    } else if (sortFlag == SORT_BY_TIME) {
+                        UpdateUIByTime();
+                    }
+                }else {
+                    Toast.makeText(this,"权限请求失败，无法访问日历",Toast.LENGTH_LONG).show();
+                }
+        }
+    }
 }
 
 

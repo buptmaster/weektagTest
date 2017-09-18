@@ -39,16 +39,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class HistoryActivity extends AppCompatActivity {
 
+    //历史上的今天key
     private static final String SECRET_CODE = "13ab6c3c3d3a43189ec8f83c04ad9928";
 
+    //历史上的今天id
     private static final String APP_ID = "45484";
 
     private RecyclerView mRecyclerView;
 
+    //数据
     private ArrayList<ListBean> mListBeen;
 
     private HistoryTodayAdapter mHistoryTodayAdapter;
 
+    //网络请求
     private Retrofit mRetrofit;
 
     private SharedPreferences sp;
@@ -60,6 +64,7 @@ public class HistoryActivity extends AppCompatActivity {
 
         mListBeen = (ArrayList<ListBean>) DataSupport.findAll(ListBean.class);
 
+        //主题的sp，获取当前主题
         themeSp = getApplicationContext().getSharedPreferences("theme", MODE_PRIVATE);
         setTheme(themeSp.getInt("theme", R.style.myTheme));
         sp = getApplicationContext().getSharedPreferences("token", MODE_PRIVATE);
@@ -106,6 +111,7 @@ public class HistoryActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            DataSupport.deleteAll(ListBean.class);
                             mHistoryTodayAdapter = new HistoryTodayAdapter(mListBeen);
                             mRecyclerView.setAdapter(mHistoryTodayAdapter);
                             for (ListBean listBean : mListBeen) {
@@ -114,7 +120,6 @@ public class HistoryActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = sp.edit();
                             editor.putString("token",Calendar.DAY_OF_MONTH+" "+Calendar.MONTH);
                             editor.apply();
-                            mRecyclerView.removeAllViews();
 
                         }
                     });
