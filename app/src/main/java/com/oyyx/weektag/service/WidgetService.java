@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Icon;
 import android.os.IBinder;
 
 import com.oyyx.weektag.activity.MainActivity;
@@ -74,7 +75,8 @@ public class WidgetService extends Service {
         mTransactionns = TransactionLab.get().getTransactionnsByDefault();
         int id = 1;
         for(Transactionn transactionn : mTransactionns){
-            if (new Date().getTime() - transactionn.getTime()>=0){
+            //提前提醒
+            if (new Date().getTime() - transactionn.getTime()<=3600000){
                 sendCompleteNotice(transactionn,id);
                 id++;
             }
@@ -110,6 +112,7 @@ public class WidgetService extends Service {
                 .setContentTitle("事件已完成")
                 .setContentText(transactionn.getTitle() + " 已完成，请前往删除事件")
                 .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.drawable.icon_tag)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_tag))
                 .setContentIntent(pendingIntent)
                 .setPriority(Notification.PRIORITY_MAX)

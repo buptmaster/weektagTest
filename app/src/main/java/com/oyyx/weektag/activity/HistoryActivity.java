@@ -22,10 +22,12 @@ import com.oyyx.weektag.net.HistoryApi;
 import org.litepal.LitePal;
 import org.litepal.crud.DataSupport;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.SimpleFormatter;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -101,8 +103,9 @@ public class HistoryActivity extends AppCompatActivity {
         }
 
 
-        if(sp.getString("token",null)==null||!sp.getString("token","date").equals(Calendar.DAY_OF_MONTH+" "+Calendar.MONTH)) {
+        if(sp.getString("token",null)==null||!sp.getString("token","date").equals(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))) {
 
+            //发起网络请求
             call.enqueue(new Callback<HistoryToday>() {
                 @Override
                 public void onResponse(Call<HistoryToday> call, Response<HistoryToday> response) {
@@ -118,7 +121,8 @@ public class HistoryActivity extends AppCompatActivity {
                                 listBean.save();
                             }
                             SharedPreferences.Editor editor = sp.edit();
-                            editor.putString("token",Calendar.DAY_OF_MONTH+" "+Calendar.MONTH);
+
+                            editor.putString("token",new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
                             editor.apply();
 
                         }

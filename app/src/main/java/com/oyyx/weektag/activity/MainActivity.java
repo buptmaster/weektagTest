@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        userImage.setOnClickListener(new View.OnClickListener() {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CharSequence[] items = {"从相册中选择", "拍照"};
