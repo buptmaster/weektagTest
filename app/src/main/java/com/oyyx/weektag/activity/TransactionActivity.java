@@ -130,7 +130,6 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        Aesthetic.attach(this);
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setTheme(getApplication().getSharedPreferences("theme",MODE_PRIVATE).getInt("theme",R.style.myTheme));
@@ -247,13 +246,6 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
         til_title.setHint("标题");
         til_memo.setHint("备注");
         super.onResume();
-//        Aesthetic.resume(this);
-    }
-
-    @Override
-    protected void onPause() {
-//        Aesthetic.pause(this);
-        super.onPause();
     }
 
     @Override

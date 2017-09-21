@@ -22,14 +22,23 @@ import org.litepal.LitePal;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * widget 服务和放松事件完成通知服务
+ */
 public class WidgetService extends Service {
 
+
+
+    //事件列表
     private List<Transactionn> mTransactionns;
 
+    //上下文对象
     private Context mContext;
 
+    //事件位置
     private static int position = 0;
 
+    //广播接收器
     private BroadcastReceiver mBroadcastReceiver;
 
 
@@ -59,8 +68,11 @@ public class WidgetService extends Service {
             }
         };
 
+        //设置广播过滤器
         IntentFilter intentFilter = new IntentFilter();
+        //更新widget
         intentFilter.addAction("android.appwidget.action.REQUEST_UPDATE");
+        //关闭前台服务
         intentFilter.addAction("closeForegroundService");
         registerReceiver(mBroadcastReceiver,intentFilter);
 
@@ -104,6 +116,11 @@ public class WidgetService extends Service {
         }
     }
 
+    /**
+     * 发送任务完成通知
+     * @param transactionn
+     * @param id
+     */
     private void sendCompleteNotice(Transactionn transactionn,int id){
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
 

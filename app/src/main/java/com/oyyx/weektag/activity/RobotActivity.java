@@ -42,6 +42,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class RobotActivity extends AppCompatActivity {
 
+    //身份识别码
     private static final String KEY = "57009182cbaa480eb19bbca87f35124a";
 
     private RecyclerView recyclerView;
@@ -50,12 +51,14 @@ public class RobotActivity extends AppCompatActivity {
     private TextView tvSend;
     private String content;
 
+
     private SharedPreferences sp;
 
     private Retrofit retrofit;
 
     private RobotApi robotApi;
 
+    //聊天数据
     private ArrayList<ItemModel> data;
     private volatile ArrayList<ItemModel> temp;
 
