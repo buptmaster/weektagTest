@@ -76,7 +76,7 @@ public class WidgetService extends Service {
         int id = 1;
         for(Transactionn transactionn : mTransactionns){
             //提前提醒
-            if (new Date().getTime() - transactionn.getTime()<=3600000){
+            if (new Date().getTime() - transactionn.getTime()>=3600000){
                 sendCompleteNotice(transactionn,id);
                 id++;
             }
