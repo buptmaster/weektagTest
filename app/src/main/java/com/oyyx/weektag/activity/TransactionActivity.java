@@ -43,6 +43,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 设置事件的Activity
  *
@@ -64,9 +67,14 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
     private Uri uri;
 
 
-    private FloatingActionButton fab_date;
-    private FloatingActionButton fab_color_picker;
-    private FloatingActionButton fab_time;
+    @BindView(R.id.date_fab)
+    FloatingActionButton fab_date;
+
+    @BindView(R.id.color_picker_fab)
+    FloatingActionButton fab_color_picker;
+
+    @BindView(R.id.time_fab)
+    FloatingActionButton fab_time;
 
     private Calendar calendar = Calendar.getInstance();
     //日期
@@ -77,16 +85,23 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
     private TimePickerDialog timePickerDialog;
 
     //显示日期和具体时间
-    private TextView tv_date;
-    private TextView tv_time;
+    @BindView(R.id.date_tv)
+    TextView tv_date;
+
+    @BindView(R.id.time_tv)
+    TextView tv_time;
 
     //自定义照片
-    private ImageView iv_photo;
+    @BindView(R.id.photo_iv)
+    ImageView iv_photo;
 
 
     //标题和备注
-    private TextInputLayout til_title;
-    private TextInputLayout til_memo;
+    @BindView(R.id.title_til)
+    TextInputLayout til_title;
+
+    @BindView(R.id.memo_til)
+    TextInputLayout til_memo;
 
     private Transactionn transactionn;
 
@@ -134,6 +149,7 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setTheme(getApplication().getSharedPreferences("theme",MODE_PRIVATE).getInt("theme",R.style.myTheme));
         setContentView(R.layout.activity_transaction);
+        ButterKnife.bind(this);
         LitePal.initialize(this);
 
         mSelectColor = ContextCompat.getColor(this, R.color.flamingo);
@@ -147,19 +163,10 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
 
         transactionn = new Transactionn();
 
-        //初始化view
-        til_title = (TextInputLayout) findViewById(R.id.title_til);
-        til_memo = (TextInputLayout) findViewById(R.id.memo_til);
 
-        tv_date = (TextView) findViewById(R.id.date_tv);
-        tv_time = (TextView) findViewById(R.id.time_tv);
 
-        tv_date.setText(getDate());
-        tv_time.setText(getTime());
 
-        fab_color_picker = (FloatingActionButton) findViewById(R.id.color_picker_fab);
-        fab_date = (FloatingActionButton) findViewById(R.id.date_fab);
-        fab_time = (FloatingActionButton) findViewById(R.id.time_fab);
+
 
         fab_color_picker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -208,7 +215,6 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
             }
         });
 
-        iv_photo = (ImageView) findViewById(R.id.photo_iv);
         iv_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -237,7 +243,8 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
         });
 
 
-
+        tv_date.setText(getDate());
+        tv_time.setText(getTime());
     }
 
     @Override

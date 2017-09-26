@@ -40,6 +40,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.iwgang.countdownview.CountdownView;
 
 /**
@@ -56,30 +58,38 @@ public class DetailActivity extends AppCompatActivity {
     private String uuid;
 
     //计时器
-    private CountdownView mCountdownView;
+    @BindView(R.id.cv_remaining_time)
+    CountdownView mCountdownView;
     //浮动按钮
-    private FloatingActionButton exportToCalendar;
+    @BindView(R.id.export_to_calendar)
+    FloatingActionButton exportToCalendar;
 
-    private ImageView detail_iv;
+    @BindView(R.id.detail_iv)
+    ImageView detail_iv;
 
-    private NestedScrollView mNestedScrollView;
+    @BindView(R.id.sv)
+    NestedScrollView mNestedScrollView;
 
     //事件
     private Transactionn transactionn;
 
     //波浪效果
-    private WaveView mWaveView;
+    @BindView(R.id.wave)
+    WaveView mWaveView;
 
     //照片的特定uri
     private String uri;
 
     private File mPhotoFile;
 
-    private CardView memo_cv;
+    @BindView(R.id.memo_cv)
+    CardView memo_cv;
 
-    private TextView detail_memo;
+    @BindView(R.id.detail_memo)
+    TextView detail_memo;
 
-    private TextView detail_date;
+    @BindView(R.id.detail_date)
+    TextView detail_date;
 
 
     @SuppressLint("SimpleDateFormat")
@@ -89,6 +99,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTheme(getApplication().getSharedPreferences("theme",MODE_PRIVATE).getInt("theme",R.style.myTheme));
         setContentView(R.layout.activity_detail);
+        ButterKnife.bind(this);
         //初始化数据库
         LitePal.initialize(this);
 
@@ -115,16 +126,8 @@ public class DetailActivity extends AppCompatActivity {
 
 
         //初始化view
-        mCountdownView = (CountdownView) findViewById(R.id.cv_remaining_time);
-        exportToCalendar = (FloatingActionButton) findViewById(R.id.export_to_calendar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_layout);
-        detail_iv = (ImageView) findViewById(R.id.detail_iv);
-        mNestedScrollView = (NestedScrollView) findViewById(R.id.sv);
-        memo_cv = (CardView)findViewById(R.id.memo_cv);
-        mWaveView = (WaveView) findViewById(R.id.wave);
-        detail_memo = (TextView) findViewById(R.id.detail_memo);
-        detail_date = (TextView) findViewById(R.id.detail_date);
 
         mNestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override

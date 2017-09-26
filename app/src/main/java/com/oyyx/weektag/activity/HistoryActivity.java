@@ -64,6 +64,7 @@ public class HistoryActivity extends AppCompatActivity {
         LitePal.initialize(this);
         super.onCreate(savedInstanceState);
 
+
         mListBeen = (ArrayList<ListBean>) DataSupport.findAll(ListBean.class);
 
         //主题的sp，获取当前主题
