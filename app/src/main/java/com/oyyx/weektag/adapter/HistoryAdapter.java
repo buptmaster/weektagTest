@@ -1,12 +1,9 @@
 package com.oyyx.weektag.adapter;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.oyyx.weektag.activity.MainActivity;
-import com.oyyx.weektag.callback.DialogCallBack;
 import com.oyyx.weektag.callback.OnMoveAndSwipedListener;
 import com.oyyx.weektag.callback.TransactionEmptyCallback;
 import com.oyyx.weektag.dateBase.TransactionLab;
@@ -34,12 +29,10 @@ import java.util.Random;
  * MainActivity的一个adapter
  */
 
-public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.TransactionHolder>implements OnMoveAndSwipedListener {
-
+public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.TransactionHolder> implements OnMoveAndSwipedListener {
 
 
     private List<Transactionn> mTransactionns;
-//    private DialogCallBack mDialogCallBack;
 
 
     private TransactionEmptyCallback mEmptyCallback;
@@ -49,10 +42,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
 
     private boolean confirmDelete = true;
 
-    public HistoryAdapter(TransactionLab transactionLab){
+    public HistoryAdapter(TransactionLab transactionLab) {
         mTransactionns = transactionLab.getTransactionns();
         mTransactionLab = transactionLab;
-//        mDialogCallBack = dialogCallBack;
     }
 
 
@@ -65,31 +57,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(parent.getContext(), DetailActivity.class);
-                intent.putExtra("position",transactionHolder.getAdapterPosition());
+                intent.putExtra("position", transactionHolder.getAdapterPosition());
                 parent.getContext().startActivity(intent);
             }
         });
-
-//        transactionHolder.item_layout.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                new AlertDialog.Builder(parent.getContext())
-//                        .setTitle("确认")
-//                        .setMessage("删除该事件")
-//                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i) {
-//                                TransactionLab.get().deleteTransaction(mTransactionns.get(transactionHolder.getAdapterPosition()).getUUID());
-//                                mDialogCallBack.updateUIFromDeleteDialog();
-//                            }
-//                        })
-//                        .setNegativeButton("取消",null)
-//                        .show();
-//                return true;
-//            }
-//        });
         return transactionHolder;
-        }
+    }
 
     @Override
     public void onBindViewHolder(HistoryAdapter.TransactionHolder holder, int position) {
@@ -103,7 +76,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
     }
 
 
-    public void setTransactionns(List<Transactionn> transactionns){
+    public void setTransactionns(List<Transactionn> transactionns) {
         mTransactionns = transactionns;
         notifyDataSetChanged();
     }
@@ -134,14 +107,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
         mTransactionns.remove(position);
         notifyItemRemoved(position);
 
-        Snackbar.make(parentView,"删除一个事件",Snackbar.LENGTH_LONG).setAction("撤销", new View.OnClickListener() {
+        Snackbar.make(parentView, "删除一个事件", Snackbar.LENGTH_LONG).setAction("撤销", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 confirmDelete = false;
                 addTransaction(transactionn, position);
             }
         }).show();
-        if (confirmDelete){
+        if (confirmDelete) {
             mTransactionLab.deleteTransaction(transactionn.getUUID());
         }
         if (mTransactionns.size() == 0) {
@@ -154,7 +127,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
 
         Transactionn mTransactionn;
 
-        private TextView title_tv, memo_tv, remaining_days_tv,unit;
+        private TextView title_tv, memo_tv, remaining_days_tv, unit;
         private FloatingActionButton color_fab;
 
         private CardView item_layout;
@@ -162,7 +135,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
         private ImageView date_bg;
 
         private View mView;
-
 
 
         public TransactionHolder(View view) {
@@ -190,17 +162,17 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
 
             long[] longs = CalendarUtils.getTime(transactionn.getTime());
 
-            if(longs[0]==0){
-                if(longs[1]==0){
+            if (longs[0] == 0) {
+                if (longs[1] == 0) {
                     remaining_days_tv.setText("0");
                     unit.setText("小时");
                     Glide.with(mView).load(R.drawable.red_bg).into(date_bg);
-                }else{
-                    remaining_days_tv.setText(longs[1]+"");
+                } else {
+                    remaining_days_tv.setText(longs[1] + "");
                     unit.setText("小时");
                     Glide.with(mView).load(R.drawable.yellow_bg).into(date_bg);
                 }
-            }else {
+            } else {
                 remaining_days_tv.setText(longs[0] + "");
                 unit.setText("天");
                 Glide.with(mView).load(R.drawable.date_bg).into(date_bg);
@@ -209,7 +181,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
             color_fab.setBackgroundTintList(ColorStateList.valueOf(transactionn.getColour()));
             if (transactionn.getMemo() != null) {
                 memo_tv.setText(transactionn.getMemo());
-            }else {
+            } else {
                 Random random = new Random();
                 int[] strs = {R.string.good_thing, R.string.bad_thing};
                 memo_tv.setText(strs[random.nextInt(1)]);

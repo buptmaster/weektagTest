@@ -3,8 +3,6 @@ package com.oyyx.weektag.activity;
 
 import android.Manifest;
 import android.app.ActivityOptions;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,7 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -21,8 +18,6 @@ import android.os.Build;
 import android.os.Bundle;
 
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -34,10 +29,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.transition.AutoTransition;
-import android.transition.ChangeBounds;
 import android.transition.Explode;
-import android.transition.Slide;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -57,9 +49,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.oyyx.weektag.R;
 import com.oyyx.weektag.adapter.HistoryAdapter;
-import com.oyyx.weektag.callback.DialogCallBack;
 import com.oyyx.weektag.callback.TransactionEmptyCallback;
-import com.oyyx.weektag.dateBase.HistoryToday;
 import com.oyyx.weektag.dateBase.TransactionLab;
 import com.oyyx.weektag.dateBase.Transactionn;
 import com.oyyx.weektag.utils.CalendarUtils;
@@ -77,7 +67,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, DialogCallBack {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     //打开本人的qq临时会话uri
     private final String qqUrl = "mqqwpa://im/chat?chat_type=wpa&uin=768471488&version=1";
@@ -366,19 +356,18 @@ public class MainActivity extends AppCompatActivity
                     }).setNegativeButton("取消", null)
                     .show();
         } else if (id == R.id.nav_feedback) {
-
-            if (isAppInstalled(this, "com.tencent.mobileqq")) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(qqUrl)));
-            } else {
-                Snackbar.make(getWindow().getDecorView(), "没有安装QQ", Snackbar.LENGTH_LONG).show();
-            }
+//            if (isAppInstalled(this, "com.tencent.mobileqq")) {
+//                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(qqUrl)));
+//            } else {
+//                Snackbar.make(getWindow().getDecorView(), "没有安装QQ", Snackbar.LENGTH_LONG).show();
+//            }
 
         } else if (id == R.id.nav_info) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Info")
-                    .setView(R.layout.dialog_info);
-            AlertDialog dialog = builder.create();
-            dialog.show();
+//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//            builder.setTitle("Info")
+//                    .setView(R.layout.dialog_info);
+//            AlertDialog dialog = builder.create();
+//            dialog.show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -494,14 +483,6 @@ public class MainActivity extends AppCompatActivity
         return pName.contains(packageName);
     }
 
-    @Override
-    public void updateUIFromDeleteDialog() {
-        if (sortFlag == SORT_DEFAULT) {
-            UpdateUI();
-        } else if (sortFlag == SORT_BY_TIME) {
-            UpdateUIByTime();
-        }
-    }
 
     private void notifyThemeChanged(int themeId, int themeCount) {
         themeSp = getApplicationContext().getSharedPreferences("theme", MODE_PRIVATE);
