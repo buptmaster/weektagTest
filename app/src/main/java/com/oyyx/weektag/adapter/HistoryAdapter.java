@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.oyyx.weektag.activity.MainActivity;
 import com.oyyx.weektag.callback.DialogCallBack;
+import com.oyyx.weektag.callback.OnMoveAndSwipedListener;
+import com.oyyx.weektag.callback.TransactionEmptyCallback;
 import com.oyyx.weektag.dateBase.TransactionLab;
 import com.oyyx.weektag.dateBase.Transactionn;
 import com.oyyx.weektag.activity.DetailActivity;
@@ -31,21 +34,31 @@ import java.util.Random;
  * MainActivity的一个adapter
  */
 
-public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.TransactionHolder> {
+public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.TransactionHolder>implements OnMoveAndSwipedListener {
 
 
 
     private List<Transactionn> mTransactionns;
-    private DialogCallBack mDialogCallBack;
+//    private DialogCallBack mDialogCallBack;
 
-    public HistoryAdapter(List<Transactionn> mTransactionns, DialogCallBack dialogCallBack){
-        this.mTransactionns = mTransactionns;
-        mDialogCallBack = dialogCallBack;
+
+    private TransactionEmptyCallback mEmptyCallback;
+    private TransactionLab mTransactionLab;
+
+    private View parentView;
+
+    private boolean confirmDelete = true;
+
+    public HistoryAdapter(TransactionLab transactionLab){
+        mTransactionns = transactionLab.getTransactionns();
+        mTransactionLab = transactionLab;
+//        mDialogCallBack = dialogCallBack;
     }
 
 
     @Override
     public TransactionHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
+        parentView = parent;
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_transaction, parent, false);
         final TransactionHolder transactionHolder = new TransactionHolder(view);
         transactionHolder.item_layout.setOnClickListener(new View.OnClickListener() {
@@ -57,24 +70,24 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
             }
         });
 
-        transactionHolder.item_layout.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                new AlertDialog.Builder(parent.getContext())
-                        .setTitle("确认")
-                        .setMessage("删除该事件")
-                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                TransactionLab.get().deleteTransaction(mTransactionns.get(transactionHolder.getAdapterPosition()).getUUID());
-                                mDialogCallBack.updateUIFromDeleteDialog();
-                            }
-                        })
-                        .setNegativeButton("取消",null)
-                        .show();
-                return true;
-            }
-        });
+//        transactionHolder.item_layout.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                new AlertDialog.Builder(parent.getContext())
+//                        .setTitle("确认")
+//                        .setMessage("删除该事件")
+//                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                TransactionLab.get().deleteTransaction(mTransactionns.get(transactionHolder.getAdapterPosition()).getUUID());
+//                                mDialogCallBack.updateUIFromDeleteDialog();
+//                            }
+//                        })
+//                        .setNegativeButton("取消",null)
+//                        .show();
+//                return true;
+//            }
+//        });
         return transactionHolder;
         }
 
@@ -89,8 +102,51 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Transact
         return mTransactionns.size();
     }
 
+
     public void setTransactionns(List<Transactionn> transactionns){
         mTransactionns = transactionns;
+        notifyDataSetChanged();
+    }
+
+    public void addTransactions(List<Transactionn> transactionns) {
+        mTransactionns.addAll(transactionns);
+        notifyItemInserted(mTransactionns.size() - 1);
+    }
+
+    public void addTransaction(Transactionn transactionn, int position) {
+        mTransactionns.add(position, transactionn);
+        notifyItemInserted(position);
+    }
+
+    public void setEmptyCallback(TransactionEmptyCallback emptyCallback) {
+        mEmptyCallback = emptyCallback;
+    }
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        return false;
+    }
+
+    @Override
+    public void onItemDismiss(final int position) {
+
+        final Transactionn transactionn = mTransactionns.get(position);
+        mTransactionns.remove(position);
+        notifyItemRemoved(position);
+
+        Snackbar.make(parentView,"删除一个事件",Snackbar.LENGTH_LONG).setAction("撤销", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDelete = false;
+                addTransaction(transactionn, position);
+            }
+        }).show();
+        if (confirmDelete){
+            mTransactionLab.deleteTransaction(transactionn.getUUID());
+        }
+        if (mTransactionns.size() == 0) {
+            mEmptyCallback.transactionWhenEmpty();
+        }
     }
 
     class TransactionHolder extends RecyclerView.ViewHolder {

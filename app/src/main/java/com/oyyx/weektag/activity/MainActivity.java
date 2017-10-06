@@ -33,6 +33,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.transition.AutoTransition;
 import android.transition.ChangeBounds;
 import android.transition.Explode;
@@ -57,10 +58,12 @@ import com.bumptech.glide.Glide;
 import com.oyyx.weektag.R;
 import com.oyyx.weektag.adapter.HistoryAdapter;
 import com.oyyx.weektag.callback.DialogCallBack;
+import com.oyyx.weektag.callback.TransactionEmptyCallback;
 import com.oyyx.weektag.dateBase.HistoryToday;
 import com.oyyx.weektag.dateBase.TransactionLab;
 import com.oyyx.weektag.dateBase.Transactionn;
 import com.oyyx.weektag.utils.CalendarUtils;
+import com.oyyx.weektag.utils.ItemTouchHelperCallback;
 
 import org.litepal.LitePal;
 
@@ -108,19 +111,20 @@ public class MainActivity extends AppCompatActivity
 
     private int themeCount;
 
+    private TransactionLab mTransactionLab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-        }
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+
 
         //更新主题
         themeSp = getApplicationContext().getSharedPreferences("theme", MODE_PRIVATE);
         themeCount = themeSp.getInt("themecount", 0);
-        setTheme(themeSp.getInt("theme",R.style.myTheme));
+        setTheme(themeSp.getInt("theme", R.style.myTheme));
 
 
         setContentView(R.layout.activity_main);
@@ -130,7 +134,7 @@ public class MainActivity extends AppCompatActivity
 
         startService(new Intent("android.appwidget.action.WIDGET_SERVICE").setPackage("com.oyyx.weektag"));
 
-
+        mTransactionLab = TransactionLab.get();
         transactionns = TransactionLab.get().getTransactionnsByDefault();
 
 
@@ -207,6 +211,25 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
 
+        mHistoryAdapter = new HistoryAdapter(mTransactionLab);
+        mHistoryAdapter.setTransactionns(mTransactionLab.getTransactionnsByDefault());
+        mHistoryAdapter.setEmptyCallback(new TransactionEmptyCallback() {
+            @Override
+            public void transactionWhenEmpty() {
+                if (transactionns.size() == 0) {
+                    emptyView.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.GONE);
+                } else {
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        mRecyclerView.setAdapter(mHistoryAdapter);
+        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mHistoryAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
         if (sortFlag == SORT_DEFAULT) {
             UpdateUI();
@@ -291,9 +314,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_import) {
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) !=PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_CALENDAR,Manifest.permission.WRITE_CALENDAR},0);
-            }else {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR}, 0);
+            } else {
                 transactionns = CalendarUtils.getCalendarEvent(this, transactionns);
                 if (sortFlag == SORT_DEFAULT) {
                     UpdateUI();
@@ -305,19 +328,19 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_robot) {
             if (isNetworkConnected(this)) {
                 startActivity(new Intent(MainActivity.this, RobotActivity.class));
-            }else {
+            } else {
                 Toast.makeText(this, "网络不可用", Toast.LENGTH_LONG).show();
             }
         } else if (id == R.id.nav_today_in_history) {
             startActivity(new Intent(MainActivity.this, HistoryActivity.class));
-        }else if(id==R.id.nav_change_theme){
+        } else if (id == R.id.nav_change_theme) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("更换主题")
                     .setIcon(R.drawable.ic_change_theme)
                     .setSingleChoiceItems(new String[]{"默认主题", "原谅绿", "可爱紫", "魅力红"}, themeCount, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            int themeId=0;
+                            int themeId = 0;
                             switch (which) {
                                 case 0:
                                     themeId = R.style.myTheme;
@@ -325,7 +348,7 @@ public class MainActivity extends AppCompatActivity
                                     break;
                                 case 1:
                                     themeId = R.style.myGreenTheme;
-                                    themeCount =1;
+                                    themeCount = 1;
                                     break;
                                 case 2:
                                     themeId = R.style.myPurpleTheme;
@@ -337,10 +360,10 @@ public class MainActivity extends AppCompatActivity
                                     break;
                             }
                             dialog.cancel();
-                            notifyThemeChanged(themeId,themeCount);
+                            notifyThemeChanged(themeId, themeCount);
 
                         }
-                    }).setNegativeButton("取消",null)
+                    }).setNegativeButton("取消", null)
                     .show();
         } else if (id == R.id.nav_feedback) {
 
@@ -410,14 +433,14 @@ public class MainActivity extends AppCompatActivity
         username.setText(sp.getString("username", "未知用户"));
         emailaddress.setText(sp.getString("emailaddress", "未知邮箱"));
         String path = sp.getString("userimage", null);
-        if (path!=null){
+        if (path != null) {
             Glide.with(this).load(path).into(userImage);
         }
     }
 
     private void UpdateUI() {
-        TransactionLab transactionLab = TransactionLab.get();
-        transactionns = transactionLab.getTransactionnsByDefault();
+        mTransactionLab = TransactionLab.get();
+        transactionns = mTransactionLab.getTransactionnsByDefault();
 
         if (transactionns.size() == 0) {
             emptyView.setVisibility(View.VISIBLE);
@@ -428,19 +451,17 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (mHistoryAdapter == null) {
-            mHistoryAdapter = new HistoryAdapter(transactionns, this);
+            mHistoryAdapter = new HistoryAdapter(mTransactionLab);
             mRecyclerView.setAdapter(mHistoryAdapter);
         } else {
             mHistoryAdapter.setTransactionns(transactionns);
-            mHistoryAdapter.notifyDataSetChanged();
 
         }
-
     }
 
     private void UpdateUIByTime() {
-        TransactionLab transactionLab = TransactionLab.get();
-        transactionns = transactionLab.getTransactionnsByTime();
+        mTransactionLab = TransactionLab.get();
+        transactionns = mTransactionLab.getTransactionnsByTime();
 
         if (transactionns.size() == 0) {
             emptyView.setVisibility(View.VISIBLE);
@@ -452,11 +473,10 @@ public class MainActivity extends AppCompatActivity
 
 
         if (mHistoryAdapter == null) {
-            mHistoryAdapter = new HistoryAdapter(transactionns, this);
+            mHistoryAdapter = new HistoryAdapter(mTransactionLab);
             mRecyclerView.setAdapter(mHistoryAdapter);
         } else {
             mHistoryAdapter.setTransactionns(transactionns);
-            mHistoryAdapter.notifyDataSetChanged();
         }
     }
 
@@ -483,13 +503,13 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void notifyThemeChanged(int themeId,int themeCount){
+    private void notifyThemeChanged(int themeId, int themeCount) {
         themeSp = getApplicationContext().getSharedPreferences("theme", MODE_PRIVATE);
         SharedPreferences.Editor editor = themeSp.edit();
         editor.putInt("theme", themeId);
         editor.putInt("themecount", themeCount);
         editor.apply();
-        startActivity(new Intent(MainActivity.this,MainActivity.class));
+        startActivity(new Intent(MainActivity.this, MainActivity.class));
         finish();
     }
 
@@ -517,8 +537,8 @@ public class MainActivity extends AppCompatActivity
                     } else if (sortFlag == SORT_BY_TIME) {
                         UpdateUIByTime();
                     }
-                }else {
-                    Toast.makeText(this,"权限请求失败，无法访问日历",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "权限请求失败，无法访问日历", Toast.LENGTH_LONG).show();
                 }
         }
     }

@@ -42,7 +42,6 @@ public class TransactionLab {
     //得到所有的transaction
     public List<Transactionn> getTransactionnsByDefault() {
         mTransactionns = DataSupport.findAll(Transactionn.class);
-        Log.e("123123123123", mTransactionns.size() + "");
         return mTransactionns;
     }
 
@@ -56,7 +55,6 @@ public class TransactionLab {
     //删除所有的transaction
     public void deleteTransactions() {
         int a = DataSupport.deleteAll(Transactionn.class);
-        Log.e("Tsdfsdf", a + "");
     }
 
     //删除指定的transaction
