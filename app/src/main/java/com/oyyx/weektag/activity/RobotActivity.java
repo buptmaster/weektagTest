@@ -81,7 +81,9 @@ public class RobotActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
 
 
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         sp = getApplicationContext().getSharedPreferences("userInfo", MODE_PRIVATE);
 
         retrofit = new Retrofit.Builder()

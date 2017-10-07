@@ -355,19 +355,8 @@ public class MainActivity extends AppCompatActivity
                         }
                     }).setNegativeButton("取消", null)
                     .show();
-        } else if (id == R.id.nav_feedback) {
-//            if (isAppInstalled(this, "com.tencent.mobileqq")) {
-//                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(qqUrl)));
-//            } else {
-//                Snackbar.make(getWindow().getDecorView(), "没有安装QQ", Snackbar.LENGTH_LONG).show();
-//            }
-
         } else if (id == R.id.nav_info) {
-//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//            builder.setTitle("Info")
-//                    .setView(R.layout.dialog_info);
-//            AlertDialog dialog = builder.create();
-//            dialog.show();
+            startActivity(new Intent(MainActivity.this, AboutActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
